@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Zodiac Man | The Spooky Do Village</title>
+<meta name="description" content="The mystical community village. Horoscopes, tarot, runes, crystal ball readings and AI identification. In memory of Brian Carter, the blind astrologer. Part of FeelFamous.">
+<meta name="theme-color" content="#0f0a2e">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine/astronomy.browser.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@400;600&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--midnight:#0f0a2e;--deep:#1a1a4e;--purple:#7c3aed;--purple-light:#a78bfa;--purple-glow:rgba(124,58,237,0.3);--gold:#d4a574;--gold-dark:#b8935a;--cream:#faf5e8;--text:#e8e8f0;--text-muted:#9184a8;--card-bg:rgba(26,26,78,0.6);--card-border:rgba(212,165,116,0.15)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;font-size:18px}
+body{font-family:'Cormorant Garamond',serif;margin:0;background:linear-gradient(180deg,var(--midnight) 0%,#1a0e2e 50%,var(--midnight) 100%);color:var(--text);min-height:100vh;font-size:18px;line-height:1.7}
+h1,h2,h3,h4,h5{font-family:'Cinzel',serif;font-weight:700;color:var(--gold)}
+.font-hand{font-family:'Caveat',cursive;font-weight:700}
+.text-xs{font-size:1rem!important;line-height:1.6!important}.text-sm{font-size:1rem!important;line-height:1.7!important}.text-base{font-size:1.125rem!important}.text-lg{font-size:1.3rem!important}.text-xl{font-size:1.5rem!important}.text-2xl{font-size:1.75rem!important}.text-3xl{font-size:2rem!important}.text-4xl{font-size:2.5rem!important}
+
+/* Header */
+.village-header{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--midnight),var(--deep));padding:2.5rem 1rem 2rem;text-align:center}
+.village-header::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 30%,rgba(124,58,237,0.2) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(212,165,116,0.1) 0%,transparent 50%)}
+.village-header *{position:relative;z-index:1}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
+
+/* Sticky Nav */
+.sticky-nav{position:sticky;top:0;z-index:40;background:rgba(15,10,46,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--card-border);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sticky-nav::-webkit-scrollbar{display:none}
+.nav-pill{padding:12px 16px;font-size:18px;font-weight:700;white-space:nowrap;color:var(--text-muted);background:none;border:none;cursor:pointer;min-height:48px;transition:color .2s;font-family:'Cinzel',serif;font-size:14px}
+.nav-pill:hover,.nav-pill.active{color:var(--gold)}
+
+/* Cards */
+.vcard{background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid var(--card-border);border-radius:20px;padding:24px;margin-bottom:20px}
+
+/* Buttons */
+.btn{min-height:48px;font-weight:700;border-radius:12px;border:none;cursor:pointer;transition:all .15s;touch-action:manipulation;display:inline-flex;align-items:center;justify-content:center;padding:12px 24px;text-decoration:none;font-family:'Cinzel',serif}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:white}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--midnight);font-weight:700}
+.btn-green{background:#16a34a;color:white}
+.btn-outline{background:transparent;border:2px solid var(--purple);color:var(--purple-light)}
+.btn-outline:hover{background:var(--purple-glow)}
+.btn-purple{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-weight:700;border:none;padding:12px 28px;border-radius:8px;cursor:pointer;font-size:16px;transition:transform .2s}
+
+/* Upload */
+.upload-box{background:rgba(124,58,237,0.1);border:3px dashed rgba(212,165,116,0.3);border-radius:16px;padding:32px 16px;text-align:center;cursor:pointer;transition:all .2s;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.upload-box:hover{border-color:var(--gold);background:rgba(212,165,116,0.1)}
+
+/* Q&A */
+.qa-item{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;margin-bottom:8px;overflow:hidden}
+.qa-q{padding:16px 20px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center;min-height:48px;font-family:'Cinzel',serif;font-size:15px;color:var(--gold)}
+.qa-q:hover{background:rgba(124,58,237,0.1)}
+.qa-a{padding:0 20px 16px;color:var(--text-muted);font-size:1.05rem;line-height:1.7;display:none}
+.qa-a.open{display:block}
+.qa-arrow{transition:transform .2s;font-size:.8rem}
+.qa-arrow.open{transform:rotate(180deg)}
+
+/* Chat */
+.chat-container{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;overflow:hidden}
+.chat-messages{height:350px;overflow-y:auto;padding:16px;scroll-behavior:smooth}
+.chat-msg{max-width:85%;margin-bottom:12px;padding:12px 16px;border-radius:16px;font-size:1.05rem;line-height:1.7;word-wrap:break-word}
+.chat-msg.user{background:var(--purple);color:white;margin-left:auto;border-bottom-right-radius:4px}
+.chat-msg.brian{background:rgba(26,26,78,0.8);border:1px solid rgba(212,165,116,0.15);margin-right:auto;border-bottom-left-radius:4px}
+.chat-input-row{display:flex;gap:8px;padding:12px;border-top:1px solid var(--card-border)}
+.chat-input-row input{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);border-radius:12px;padding:12px 16px;color:var(--text);font-size:18px;font-family:inherit;outline:none}
+.chat-input-row input:focus{border-color:var(--gold)}
+.typing-dots span{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin:0 2px;animation:bounce 1.4s infinite ease-in-out}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+
+/* Section reveal */
+.section-fade{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.section-fade.visible{opacity:1;transform:translateY(0)}
+
+/* Offers */
+.offer-card{background:linear-gradient(135deg,#1e1b4b,#312e81);color:white;border-radius:24px;padding:32px;position:relative;overflow:hidden;margin-bottom:20px}
+.offer-card::before{content:'';position:absolute;top:-50%;right:-50%;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%)}
+.badge{display:inline-block;padding:6px 14px;border-radius:20px;font-size:16px;font-weight:700;text-transform:uppercase}
+.badge-founder{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--midnight)}
+
+/* Result */
+.result-card{background:linear-gradient(135deg,var(--deep),#222266);border:2px solid var(--gold);border-radius:24px;padding:24px;overflow:visible}
+
+/* Loading */
+.loading-spinner{animation:spin 1s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.pulse{animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal-content{background:white;border-radius:24px;padding:32px;max-width:420px;width:100%;color:#1f2937}
+.hidden{display:none!important}
+
+/* Tarot */
+.tarot-card{width:140px;height:220px;perspective:800px;cursor:pointer;margin:8px}
+.tarot-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.tarot-card.flipped .tarot-inner{transform:rotateY(180deg)}
+.tarot-front,.tarot-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center}
+.tarot-back{background:linear-gradient(135deg,#1a0a3e,#2a1a5e);border:2px solid var(--gold);z-index:2}
+.tarot-back::before{content:'\2726';font-size:48px;color:var(--gold);opacity:.6}
+.tarot-front{background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight);transform:rotateY(180deg);flex-direction:column;font-size:13px;line-height:1.4}
+.tarot-front h4{font-size:14px;margin-bottom:6px;color:var(--purple)}
+
+/* Crystal ball */
+.crystal-ball{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.3),rgba(124,58,237,.3),rgba(14,165,233,.2),rgba(15,10,46,.8));box-shadow:0 0 40px rgba(124,58,237,.4),0 0 80px rgba(14,165,233,.2),inset 0 0 40px rgba(255,255,255,.1);cursor:pointer;animation:pulse-glow 3s ease-in-out infinite;margin:20px auto;display:flex;align-items:center;justify-content:center}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 40px rgba(124,58,237,.4),0 0 80px rgba(14,165,233,.2)}50%{box-shadow:0 0 60px rgba(124,58,237,.6),0 0 100px rgba(14,165,233,.4)}}
+
+/* Rune */
+.rune-symbol{font-size:80px;color:var(--gold);text-shadow:0 0 20px rgba(212,165,116,.4)}
+
+/* Zodiac grid */
+.zodiac-card{background:linear-gradient(135deg,var(--deep),#222266);border:1px solid rgba(212,165,116,.15);border-radius:12px;padding:20px;text-align:center;transition:transform .2s}
+.zodiac-card:hover{transform:translateY(-2px)}
+
+/* Village links */
+.village-link{display:block;padding:16px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;margin-bottom:8px;text-decoration:none;color:var(--text);transition:all .15s}
+.village-link:hover{border-color:var(--purple);background:rgba(124,58,237,0.1)}
+
+/* Gear card */
+.gear-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:16px;display:flex;gap:12px;align-items:start;margin-bottom:10px;text-decoration:none;color:var(--text);transition:all .2s}
+.gear-card:hover{border-color:var(--gold);background:rgba(212,165,116,0.05)}
+
+/* Stage card */
+.stage-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--text)}
+.stage-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,165,116,0.15)}
+
+/* Tabs */
+.tab-bar{display:flex;gap:4px;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{padding:10px 14px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;color:var(--text-muted);font-weight:700;font-size:16px;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:'Cinzel',serif;min-height:44px}
+.tab-btn.active{background:var(--purple);color:white;border-color:var(--purple)}
+.tab-btn:hover:not(.active){border-color:var(--gold)}
+.tab-panel{display:none;animation:fadeUp .3s ease}
+.tab-panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Snap Pages */
+.snap-page{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;padding-top:70px;padding-bottom:20px}
+
+/* Dot Nav */
+.dot-nav{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:45;display:flex;flex-direction:column;gap:10px;align-items:center}
+.dot-nav-dot{width:10px;height:10px;border-radius:50%;background:rgba(124,58,237,0.3);border:none;cursor:pointer;transition:all .3s;padding:0;position:relative}
+.dot-nav-dot.active{background:var(--gold);transform:scale(1.4);box-shadow:0 0 8px rgba(212,165,116,0.4)}
+.dot-nav-dot:hover{background:var(--purple-light)}
+.dot-nav-dot::after{content:attr(data-label);position:absolute;right:20px;top:50%;transform:translateY(-50%);background:var(--deep);color:var(--text);padding:4px 10px;border-radius:8px;font-size:14px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;font-family:'Cinzel',serif}
+.dot-nav-dot:hover::after{opacity:1}
+
+/* Spinner */
+.spinner{width:40px;height:40px;border:4px solid rgba(212,165,116,.2);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:20px auto}
+
+/* Toggle */
+.toggle-track{width:60px;height:30px;background:var(--deep);border-radius:15px;border:2px solid var(--gold);cursor:pointer;position:relative;transition:background .3s}
+.toggle-track.on{background:var(--purple)}
+.toggle-knob{width:24px;height:24px;background:var(--gold);border-radius:50%;position:absolute;top:1px;left:2px;transition:left .3s}
+.toggle-track.on .toggle-knob{left:32px}
+
+/* Cross-nav */
+.cross-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:20px}
+.cross-nav a{padding:6px 14px;border-radius:6px;background:rgba(26,26,78,.6);color:var(--gold);text-decoration:none;font-size:13px;font-family:'Cinzel',serif;border:1px solid rgba(212,165,116,.2);transition:all .2s}
+.cross-nav a:hover,.cross-nav a.current{background:var(--gold);color:var(--midnight)}
+
+/* Kill Tailwind CDN dev overlay */
+body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!important;pointer-events:none!important}
+
+@media(max-width:640px){.vcard{padding:20px}.offer-card{padding:24px}.dot-nav{right:8px;gap:8px}.dot-nav-dot{width:8px;height:8px}.snap-page{padding-top:60px}.tarot-card{width:100px;height:160px}.crystal-ball{width:150px;height:150px}body{font-size:16px}.nav-pill{font-size:12px;padding:10px 12px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- Age Verification Modal -->
+<div id="ageModal" class="modal-overlay hidden">
+    <div class="modal-content text-center">
+        <h2 class="text-2xl font-bold mb-3" style="color:var(--midnight)">Welcome, Seeker</h2>
+        <p class="text-gray-600 mb-6">Zodiac Man is a mystical village for everyone who seeks the stars. All ages, all paths, all welcome. We just need to know who you are so we can look after you properly.</p>
+        <div class="space-y-3">
+            <button onclick="confirmAge('adult')" class="w-full btn btn-green">I'm 18+ (Enter the Circle)</button>
+            <button onclick="confirmAge('parent')" class="w-full btn" style="background:#3b82f6;color:white">I'm a Parent/Guardian</button>
+            <button onclick="confirmAge('under18')" class="w-full btn btn-primary">I'm Under 18</button>
+        </div>
+        <p class="text-xs text-gray-500 mt-6">Every soul welcome. Be kind. That's the code.</p>
+    </div>
+</div>
+
+<!-- Header -->
+<header class="village-header" id="headerWrap">
+    <div id="stars"></div>
+    <h1 style="font-size:clamp(32px,6vw,56px);letter-spacing:2px;margin-bottom:8px">Zodiac Man</h1>
+    <p style="font-size:clamp(16px,3vw,22px);color:var(--text);margin-bottom:8px;font-weight:600">The Spooky Do Village</p>
+    <p class="font-hand" style="font-size:clamp(18px,3.5vw,28px);color:var(--gold);max-width:600px;margin:0 auto">"Everything works out in the end. You've just got to keep moving forward."</p>
+    <p style="margin-top:12px;font-size:14px;opacity:.7">In loving memory of Brian Carter &bull; The blind astrologer who still read the stars</p>
+</header>
+
+<!-- Sticky Nav -->
+<nav class="sticky-nav">
+    <div class="max-w-3xl mx-auto flex">
+        <button onclick="scrollToSection('#pageHome')" class="nav-pill active" data-section="pageHome">Home</button>
+        <button onclick="scrollToSection('#pageReading')" class="nav-pill" data-section="pageReading">Reading</button>
+        <button onclick="scrollToSection('#pageSpooky')" class="nav-pill" data-section="pageSpooky">Spooky Do</button>
+        <button onclick="scrollToSection('#pageStars')" class="nav-pill" data-section="pageStars">Stars</button>
+        <button onclick="scrollToSection('#pageQA')" class="nav-pill" data-section="pageQA">Q&amp;A</button>
+        <button onclick="scrollToSection('#pageBrian')" class="nav-pill" data-section="pageBrian">Brian</button>
+        <button onclick="scrollToSection('#pageGear')" class="nav-pill" data-section="pageGear">Gear</button>
+        <button onclick="scrollToSection('#pageVillage')" class="nav-pill" data-section="pageVillage">Village</button>
+        <button onclick="scrollToSection('#pageHamlet')" class="nav-pill" data-section="pageHamlet">Hamlet</button>
+        <button onclick="scrollToSection('#pageJoin')" class="nav-pill" data-section="pageJoin">Join</button>
+        <button onclick="showAdmin()" class="nav-pill hidden" id="navAdmin">God Mode</button>
+    </div>
+</nav>
+
+<!-- Quick Free Sign Up -->
+<div id="quickSignUp" style="background:linear-gradient(135deg,rgba(26,26,78,0.9),rgba(15,10,46,0.95));border-bottom:1px solid var(--card-border);padding:12px 16px;">
+    <div class="max-w-3xl mx-auto">
+        <div id="quickAuthForm" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;">
+            <span style="font-weight:700;color:var(--gold);font-size:1rem;white-space:nowrap;font-family:'Cinzel',serif">Join Free</span>
+            <input type="email" id="emailInputQuick" placeholder="your@email.com" style="flex:1;min-width:160px;padding:10px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);border-radius:10px;color:var(--text);font-size:1rem;font-family:inherit;">
+            <input type="password" id="passwordInputQuick" placeholder="Password (6+ chars)" style="flex:1;min-width:140px;padding:10px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);border-radius:10px;color:var(--text);font-size:1rem;font-family:inherit;">
+            <button onclick="signUpOrIn('emailInputQuick','passwordInputQuick','quickAuthForm','quickAuthSuccess')" class="btn btn-gold" style="padding:10px 20px;font-size:1rem;white-space:nowrap;">Sign Up Free</button>
+        </div>
+        <div id="quickAuthSuccess" class="hidden" style="text-align:center;padding:8px;">
+            <span style="color:#22c55e;font-weight:700;">Welcome home.</span> <span style="color:var(--text-muted);">The stars were waiting for you.</span>
+        </div>
+    </div>
+</div>
+
+<!-- User Status Bar -->
+<div id="userBar" class="hidden" style="background:linear-gradient(90deg,rgba(124,58,237,0.2),rgba(212,165,116,0.1));padding:8px 16px;">
+    <div class="max-w-3xl mx-auto flex items-center justify-between text-sm">
+        <div class="font-semibold">
+            <span id="userBadge"></span> <span id="userName"></span> &bull; <span id="userKudos">0</span> Kudos
+        </div>
+        <button onclick="signOut()" class="text-purple-300 underline text-xs">Sign out</button>
+    </div>
+</div>
+
+<main class="max-w-3xl mx-auto px-4">
+
+<!-- ==================== PAGE: HOME ==================== -->
+<div class="snap-page" id="pageHome">
+
+<section id="sectionIdentifier" class="section-fade">
+    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Brian's Mystical Identifier</h2>
+    <p class="text-center mb-4" style="color:var(--text-muted);font-size:1.1rem">Snap a photo of any mystical object. Brian identifies crystals, tarot cards, runes, spiritual items and more.</p>
+    <div id="oracleUpload">
+        <div class="vcard">
+            <div class="flex gap-2 mb-4">
+                <button onclick="setMode('identify')" id="modeIdentify" class="flex-1 btn btn-primary text-sm">Identify</button>
+                <button onclick="setMode('roast')" id="modeRoast" class="flex-1 btn btn-outline text-sm">Spooky Roast</button>
+            </div>
+            <h3 class="text-xl font-bold text-center mb-2" id="oracleTitle">What's This Mystical Object?</h3>
+            <p class="text-center mb-6 text-sm" style="color:var(--text-muted)" id="oracleSubtitle">Snap a photo. Brian will tell you what the universe thinks.</p>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="upload-box" onclick="document.getElementById('cameraInput').click()">
+                    <div class="text-4xl mb-2">&#128247;</div>
+                    <p class="font-bold text-sm">Camera</p>
+                </div>
+                <div class="upload-box" onclick="document.getElementById('galleryInput').click()">
+                    <div class="text-4xl mb-2">&#128444;&#65039;</div>
+                    <p class="font-bold text-sm">Gallery</p>
+                </div>
+            </div>
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="handleUpload(this)">
+            <input type="file" id="galleryInput" accept="image/*" class="hidden" onchange="handleUpload(this)">
+        </div>
+        <div class="vcard" style="border-color:rgba(212,165,116,0.2)">
+            <h3 class="font-bold mb-3" style="color:var(--gold)">Brian Knows:</h3>
+            <ul class="text-sm space-y-2" style="color:var(--text-muted)">
+                <li>&#128302; Crystals, gemstones &amp; healing stones</li>
+                <li>&#127183; Tarot decks, oracle cards &amp; divination tools</li>
+                <li>&#x16A0; Rune sets, pendulums &amp; sacred objects</li>
+                <li>&#128156; Spiritual items, incense, candles &amp; ritual tools</li>
+                <li>&#128176; What it might be worth</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Loading View -->
+<div id="loadingView" class="hidden">
+    <div class="vcard text-center py-12">
+        <div class="text-6xl loading-spinner mb-4">&#128302;</div>
+        <p class="text-xl font-bold pulse" id="loadingTitle" style="color:var(--gold)">Brian's consulting his Ephemeris...</p>
+        <p class="text-sm mt-2" style="color:var(--text-muted)" id="loadingStatus">Analyzing your image</p>
+        <div id="loadingTimer" class="font-mono text-lg mt-3" style="color:var(--gold)"></div>
+        <div id="patienceMetric" class="mt-4 p-3 rounded-xl" style="background:rgba(124,58,237,0.15)">
+            <div class="flex items-center justify-center gap-2 mb-1">
+                <span id="patienceEmoji" class="text-lg">&#128302;</span>
+                <span id="patienceTitle" class="text-sm font-bold" style="color:var(--gold)">Patience Level: Apprentice</span>
+            </div>
+            <div class="w-full rounded-full h-2 mt-2" style="background:rgba(124,58,237,0.3)">
+                <div id="patienceBar" class="h-2 rounded-full transition-all duration-1000" style="background:linear-gradient(90deg,var(--purple),var(--gold));width:5%"></div>
+            </div>
+            <p id="patienceBonus" class="text-xs mt-1 hidden" style="color:var(--gold)">+5 bonus Kudos for patience!</p>
+        </div>
+    </div>
+</div>
+
+<!-- Result View -->
+<div id="resultView" class="hidden">
+    <div class="result-card">
+        <img id="resultImage" src="" alt="Result" class="w-full rounded-xl mb-4 shadow-lg">
+        <h3 id="resultTitle" class="text-2xl font-extrabold mb-2"></h3>
+        <div id="resultDescription" class="text-white/90 text-sm leading-relaxed whitespace-pre-wrap"></div>
+    </div>
+    <div class="grid grid-cols-2 gap-3 my-4">
+        <button onclick="downloadResult()" class="btn btn-green">Download</button>
+        <button onclick="shareResult()" class="btn btn-primary">Share</button>
+        <button onclick="sellWithSpicyLister()" class="btn btn-gold">Sell With SpicyLister</button>
+        <button onclick="resetToHome()" class="btn btn-outline">Again</button>
+    </div>
+    <div id="signInPrompt" class="vcard text-center">
+        <p class="font-semibold mb-4">Sign in to earn kudos!</p>
+        <div id="authFormResult">
+            <input type="email" id="emailInputResult" placeholder="your@email.com" class="w-full px-4 py-3 border-2 rounded-xl mb-3 text-center" style="background:rgba(255,255,255,0.05);border-color:var(--card-border);color:var(--text)">
+            <input type="password" id="passwordInputResult" placeholder="Password" class="w-full px-4 py-3 border-2 rounded-xl mb-3 text-center" style="background:rgba(255,255,255,0.05);border-color:var(--card-border);color:var(--text)">
+            <button onclick="signUpOrIn('emailInputResult','passwordInputResult','authFormResult','authSuccessResult')" class="btn btn-primary w-full">Sign In / Sign Up</button>
+        </div>
+        <div id="authSuccessResult" class="hidden p-4 rounded-xl" style="background:rgba(22,163,74,0.15)">
+            <p class="font-bold" style="color:#22c55e">Welcome home.</p>
+            <p class="text-sm mt-1" style="color:var(--text-muted)">The stars were waiting for you.</p>
+        </div>
+    </div>
+    <div id="kudosEarned" class="hidden vcard text-center" style="border-color:rgba(212,165,116,0.3)">
+        <p class="text-xl font-bold" style="color:var(--gold)">+10 Kudos Earned!</p>
+    </div>
+</div>
+
+<!-- Search Bar -->
+<section class="section-fade" style="margin-bottom:20px">
+    <div class="vcard" style="padding:16px 20px">
+        <div style="position:relative">
+            <input type="text" id="villageSearch" placeholder="Search hamlets, villages, people..." autocomplete="off"
+                style="width:100%;padding:14px 48px 14px 20px;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);border-radius:12px;color:var(--text);font-size:18px;font-family:inherit;outline:none;"
+                onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--card-border)'">
+            <span style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:1.3rem;opacity:0.4;pointer-events:none">&#128270;</span>
+        </div>
+        <div id="searchResults" style="display:none;margin-top:12px"></div>
+    </div>
+</section>
+
+<!-- Join For Free -->
+<section class="section-fade">
+    <div class="vcard text-center" style="border-color:rgba(212,165,116,0.3)">
+        <p class="font-hand text-2xl mb-3" style="color:var(--gold)">Join For Free</p>
+        <p style="color:var(--text);font-size:1.15rem;line-height:1.8;margin-bottom:16px">Discover what the stars have in store for you.</p>
+        <p style="color:var(--text-muted);font-size:1rem;margin-bottom:20px">No tricks. No upsell. Just a mystical community that looks after its own.</p>
+        <a href="#sectionJoin" onclick="event.preventDefault();scrollToSection('#pageJoin')" class="btn btn-gold" style="font-size:1.1rem">Sign Up Free</a>
+    </div>
+</section>
+
+<!-- Broadcast -->
+<div id="broadcastSection" class="hidden" style="margin-bottom:20px">
+    <div class="vcard" style="background:linear-gradient(135deg,#1e1b4b,#312e81);padding:0;overflow:hidden;border:none">
+        <div id="emergencyBanner" class="hidden text-center py-2 font-bold text-sm" style="background:#ef4444;color:white">&#128226; EMERGENCY BROADCAST</div>
+        <div class="p-4">
+            <p class="font-bold text-sm mb-3 opacity-80" id="broadcastTitle">Village Broadcast</p>
+            <div class="relative mx-auto" style="padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;max-width:400px">
+                <iframe id="broadcastVideo" src="" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Arrivals -->
+<section class="section-fade">
+    <div class="vcard">
+        <h3 class="font-bold mb-3">Recent Arrivals</h3>
+        <div id="activityList" class="space-y-2 text-sm" style="color:var(--text-muted)"><p>Loading...</p></div>
+    </div>
+</section>
+
+</div><!-- /pageHome -->
+
+<!-- ==================== PAGE: READING ==================== -->
+<div class="snap-page" id="pageReading">
+<section class="section-fade">
+    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Your Personal Reading</h2>
+    <p class="font-hand text-center" style="color:var(--gold);font-size:20px;margin-bottom:20px">"Spooky Do! Let Brian read your stars, love"</p>
+    <div class="vcard">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:end">
+            <div>
+                <label style="font-size:14px;display:block;margin-bottom:4px;color:var(--gold)">Your Birthday</label>
+                <input type="date" id="birthdayInput" style="padding:10px 16px;border-radius:8px;border:1px solid var(--gold);background:rgba(15,10,46,.8);color:var(--text);font-size:16px;font-family:inherit">
+            </div>
+            <button class="btn btn-gold" onclick="readMyStars()">Read My Stars</button>
+        </div>
+    </div>
+    <div id="readingResults" style="display:none">
+        <div class="vcard" id="zodiacResult"></div>
+        <div class="vcard" id="horoscopeResult"></div>
+        <div class="vcard" id="numerologyResult"></div>
+        <div class="vcard" id="moonResult"></div>
+        <div class="vcard" id="mercuryResult"></div>
+    </div>
+</section>
+</div><!-- /pageReading -->
+
+<!-- ==================== PAGE: SPOOKY DO ==================== -->
+<div class="snap-page" id="pageSpooky">
+<section class="section-fade">
+    <h2 class="font-hand text-3xl text-center mb-4" style="color:var(--gold)">The Spooky Do</h2>
+
+    <!-- Tarot -->
+    <div class="vcard" style="margin-bottom:24px">
+        <h3 style="font-size:22px;text-align:center;margin-bottom:4px">Tarot Card Reading</h3>
+        <p class="font-hand" style="text-align:center;color:var(--gold);font-size:18px;margin-bottom:16px">"Three cards, love. Past, present, and future."</p>
+        <div style="text-align:center;margin-bottom:16px">
+            <button class="btn btn-gold" onclick="drawTarot()">Draw Your Cards</button>
+        </div>
+        <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px" id="tarotSpread">
+            <div class="tarot-card" id="tarot0" onclick="flipTarot(0)"><div class="tarot-inner"><div class="tarot-back"></div><div class="tarot-front" id="tarotFace0"></div></div></div>
+            <div class="tarot-card" id="tarot1" onclick="flipTarot(1)"><div class="tarot-inner"><div class="tarot-back"></div><div class="tarot-front" id="tarotFace1"></div></div></div>
+            <div class="tarot-card" id="tarot2" onclick="flipTarot(2)"><div class="tarot-inner"><div class="tarot-back"></div><div class="tarot-front" id="tarotFace2"></div></div></div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:12px;margin-top:8px;text-align:center">
+            <div style="width:140px;font-size:13px;color:var(--gold);font-family:'Cinzel',serif">Past</div>
+            <div style="width:140px;font-size:13px;color:var(--gold);font-family:'Cinzel',serif">Present</div>
+            <div style="width:140px;font-size:13px;color:var(--gold);font-family:'Cinzel',serif">Future</div>
+        </div>
+    </div>
+
+    <!-- Crystal Ball -->
+    <div class="vcard" style="margin-bottom:24px;text-align:center">
+        <h3 style="font-size:22px;margin-bottom:4px">The Crystal Ball</h3>
+        <p class="font-hand" style="color:var(--gold);font-size:18px;margin-bottom:8px">"Tap the ball, love. Let's see what the universe has to say."</p>
+        <div class="crystal-ball" id="crystalBall" onclick="askCrystalBall()">
+            <span style="font-size:36px;opacity:.5">&#x1F52E;</span>
+        </div>
+        <div id="crystalMsg" style="margin-top:16px;font-size:20px;min-height:60px;padding:0 20px" class="font-hand"></div>
+        <button class="btn-purple" onclick="askCrystalBall()" style="margin-top:12px">Ask the Crystal Ball</button>
+    </div>
+
+    <!-- Daily Rune -->
+    <div class="vcard">
+        <h3 style="font-size:22px;text-align:center;margin-bottom:4px">Your Daily Rune</h3>
+        <p class="font-hand" style="text-align:center;color:var(--gold);font-size:18px;margin-bottom:16px">"The runes speak in whispers, love. Let's hear what they're saying today."</p>
+        <div style="text-align:center">
+            <button class="btn btn-gold" onclick="drawDailyRune()">Draw Today's Rune</button>
+        </div>
+        <div id="runeResult" style="text-align:center;margin-top:20px"></div>
+    </div>
+</section>
+</div><!-- /pageSpooky -->
+
+<!-- ==================== PAGE: STARS ==================== -->
+<div class="snap-page" id="pageStars">
+<section class="section-fade">
+    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">The Zodiac</h2>
+    <p class="font-hand" style="text-align:center;color:var(--gold);font-size:20px;margin-bottom:24px">"Every sign has magic, love. Every single one."</p>
+    <div id="zodiacGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-bottom:32px"></div>
+
+    <div class="vcard" style="margin-bottom:24px">
+        <h3 style="font-size:20px;margin-bottom:16px;text-align:center">The Elements</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#e25822;margin-bottom:6px">&#x1F525; Fire</h4><p style="font-size:15px">Aries, Leo, Sagittarius<br>Passionate, dynamic, creative</p></div>
+            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#228B22;margin-bottom:6px">&#x1F30D; Earth</h4><p style="font-size:15px">Taurus, Virgo, Capricorn<br>Grounded, reliable, practical</p></div>
+            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#4169E1;margin-bottom:6px">&#x1F4A8; Air</h4><p style="font-size:15px">Gemini, Libra, Aquarius<br>Intellectual, social, visionary</p></div>
+            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#008B8B;margin-bottom:6px">&#x1F30A; Water</h4><p style="font-size:15px">Cancer, Scorpio, Pisces<br>Intuitive, emotional, deep</p></div>
+        </div>
+    </div>
+
+    <div class="vcard">
+        <h3 style="font-size:20px;margin-bottom:12px;text-align:center">Compatibility</h3>
+        <p class="font-hand" style="text-align:center;color:var(--gold);font-size:18px;margin-bottom:12px">"I've seen every combination work beautifully when people are kind to each other."</p>
+        <p style="margin-bottom:8px"><strong style="color:var(--gold)">Fire + Air:</strong> Sparks fly! These signs energise and inspire each other.</p>
+        <p style="margin-bottom:8px"><strong style="color:var(--gold)">Earth + Water:</strong> Deep roots and flowing emotions. Solid as a rock with the depth of the ocean.</p>
+        <p style="margin-bottom:8px"><strong style="color:var(--gold)">Same Element:</strong> You speak the same language. Two fire signs? That's a bonfire, love.</p>
+        <p><strong style="color:var(--gold)">The Brian Rule:</strong> "The stars give you a map, kid, but you choose where to walk."</p>
+    </div>
+</section>
+</div><!-- /pageStars -->
+
+<!-- ==================== PAGE: Q&A ==================== -->
+<div class="snap-page" id="pageQA">
+<section class="section-fade">
+    <h2 class="font-hand text-3xl text-center mb-4" style="color:var(--gold)">Brian Answers Your Questions</h2>
+    <div class="qa-item"><div class="qa-q" onclick="toggleQA(this)"><span>What is astrology?</span><span class="qa-arrow">&#9660;</span></div><div class="qa-a">Now that's a big question, love! Astrology is the study of how the movements of the planets and stars connect to life down here on Earth. It's been around for thousands of years. I've got my Ephemeris that tracks where every planet is, every single day. Think of it like a cosmic weather forecast. It doesn't tell you what WILL happen, but it shows you the energies that are flowing.</div></div>
+    <div class="qa-item"><div class="qa-q" onclick="toggleQA(this)"><span>Can the stars predict my future?</span><span class="qa-arrow">&#9660;</span></div><div class="qa-a">I'll be honest with you, love -- the stars don't predict your future. They illuminate it. Think of your birth chart as a map of possibilities. It shows your strengths, your tendencies, the energies you were born with. But YOU choose what to do with them. I've read thousands of charts and I've never seen a bad one. Every chart has gifts, every sign has magic.</div></div>
+    <div class="qa-item"><div class="qa-q" onclick="toggleQA(this)"><span>What's an Ephemeris?</span><span class="qa-arrow">&#9660;</span></div><div class="qa-a">An Ephemeris is THE book as far as I'm concerned -- it lists the exact position of every planet for every day of every year. I carried mine everywhere. Even after I lost my sight, I had most of it memorised. With an Ephemeris and a birth time, I can read anyone's stars. It's my bible, love.</div></div>
+    <div class="qa-item"><div class="qa-q" onclick="toggleQA(this)"><span>What's Mercury retrograde?</span><span class="qa-arrow">&#9660;</span></div><div class="qa-a">Everyone panics about Mercury retrograde but honestly, it's not the end of the world. Mercury APPEARS to move backwards in the sky. Things connected to Mercury -- communication, travel, technology -- can get a bit wobbly. But here's what nobody tells you: it's BRILLIANT for revisiting old ideas, reconnecting with people, and finishing things you started. Don't fear it, love. Work with it.</div></div>
+    <div class="qa-item"><div class="qa-q" onclick="toggleQA(this)"><span>Can you read my palm?</span><span class="qa-arrow">&#9660;</span></div><div class="qa-a">Palmistry! Now there's a proper old art. Your palm has four main lines: the heart line, the head line, the life line, and the fate line. Upload a photo of your palm on the Identify tab and I'll have a look for you, love. I might be blind but I've read enough palms to know them by heart!</div></div>
+    <div class="qa-item"><div class="qa-q" onclick="toggleQA(this)"><span>Are horoscopes real?</span><span class="qa-arrow">&#9660;</span></div><div class="qa-a">Your full birth chart has the Moon, Mercury, Venus, Mars, Jupiter, Saturn, and more, all in different signs and houses. That's the REAL reading. But even a Sun sign horoscope can give you a nudge in the right direction. Whether you believe the stars are physically pulling strings or just providing a beautiful framework for self-reflection -- either way, it works. And that's the Spooky Do, kid.</div></div>
+    <div class="qa-item"><div class="qa-q" onclick="toggleQA(this)"><span>Who was Brian Carter?</span><span class="qa-arrow">&#9660;</span></div><div class="qa-a">That's me, love! Brian Carter, known as Zodiac Man. I'm from Lancashire, born a showman. I worked the fairgrounds, lived the life. In the 1960s I went to Germany as a gardener and married my German sweetheart -- My Love Indoors, I call her. I carried my Ephemeris everywhere, read the stars for anyone who'd listen. Later in life I lost my sight, but the stars don't care if you can see them. I used to do zodiac readings live on CB radio. Christian, the lad who built this site, he's like a son to me. I believe in you, kid. Always have, always will.</div></div>
+</section>
+</div><!-- /pageQA -->
+
+<!-- ==================== PAGE: BRIAN (Chat) ==================== -->
+<div class="snap-page" id="pageBrian">
+<section class="section-fade">
+    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Ask Zodiac Man</h2>
+    <p class="text-center text-sm mb-4" style="color:var(--text-muted)">Brian's always got time for a rag chew. Ask him anything about the stars, tarot, runes, crystals, or life itself.</p>
+    <div class="chat-container">
+        <div class="p-3 text-center text-sm" style="background:rgba(26,26,78,0.8);color:var(--gold)">
+            <span class="font-hand text-lg">&#128302; The Spooky Do is open for business...</span>
+        </div>
+        <div class="chat-messages" id="brianMessages">
+            <div class="chat-msg brian">Hello love! I'm Brian, your Zodiac Man. Ask me anything about the stars, tarot, runes, crystals, or life itself. The Spooky Do is open for business! &#x2728;</div>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" id="brianInput" placeholder="Ask Brian anything..." onkeypress="if(event.key==='Enter')sendBrianMessage()">
+            <button onclick="sendBrianMessage()" class="btn btn-gold" style="padding:12px 16px;min-height:44px">Key Up</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 12px;border-top:1px solid var(--card-border)">
+            <span class="btn btn-outline" style="padding:6px 12px;font-size:14px;min-height:auto;font-family:'Cormorant Garamond',serif" onclick="quickAsk(this.textContent)">What's my sign mean?</span>
+            <span class="btn btn-outline" style="padding:6px 12px;font-size:14px;min-height:auto;font-family:'Cormorant Garamond',serif" onclick="quickAsk(this.textContent)">Is Mercury retrograde?</span>
+            <span class="btn btn-outline" style="padding:6px 12px;font-size:14px;min-height:auto;font-family:'Cormorant Garamond',serif" onclick="quickAsk(this.textContent)">Love compatibility?</span>
+            <span class="btn btn-outline" style="padding:6px 12px;font-size:14px;min-height:auto;font-family:'Cormorant Garamond',serif" onclick="quickAsk(this.textContent)">Tell me about Brian</span>
+        </div>
+        <div class="flex justify-between px-3 py-2" style="border-top:1px solid var(--card-border)">
+            <button onclick="clearBrianChat()" class="text-xs underline" style="color:var(--text-muted)">Clear chat</button>
+            <span class="text-xs" style="color:var(--text-muted)">The stars are always listening</span>
+        </div>
+    </div>
+</section>
+</div><!-- /pageBrian -->
+
+<!-- ==================== PAGE: GEAR ==================== -->
+<div class="snap-page" id="pageGear">
+<section class="section-fade">
+    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Zodiac Man's Kit Bag</h2>
+    <p class="font-hand" style="text-align:center;color:var(--gold);font-size:20px;margin-bottom:24px">"Every good astrologer needs the right tools, love"</p>
+    <div id="gearGrid"></div>
+    <p class="text-xs text-center mt-4 mb-6" style="color:var(--text-muted)">Amazon links &mdash; buying through these helps the village, costs you nothing extra.</p>
+
+    <!-- Coffeeware -->
+    <div class="vcard" style="text-align:center">
+        <p class="font-hand" style="font-size:22px;color:var(--gold);margin-bottom:12px">"If what you read makes everything feel better, then Brian would Love a Cup of Tea and a Toasted Tea Cake."</p>
+        <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
+            <a href="https://buymeacoffee.com/chrispteemagician" target="_blank" class="btn btn-gold" style="text-decoration:none">Buy Me a Coffee</a>
+            <a href="https://ko-fi.com/zoom" target="_blank" class="btn btn-purple" style="text-decoration:none">Ko-fi</a>
+        </div>
+    </div>
+</section>
+</div><!-- /pageGear -->
+
+<!-- ==================== PAGE: VILLAGE ==================== -->
+<div class="snap-page" id="pageVillage">
+<section class="section-fade">
+    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">The Village</h2>
+    <p class="text-center text-sm mb-6" style="color:var(--text-muted)">The people who believed before it was built.</p>
+
+    <div class="vcard" style="margin-top:20px">
+        <h3 class="font-bold mb-4">The -Oid Villages</h3>
+        <div class="grid grid-cols-3 gap-2 mb-4">
+            <a href="https://magic-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#127913;</span><span class="block text-sm font-semibold mt-1">Magic-Oid</span></a>
+            <div class="village-link text-center py-3" style="border-color:var(--gold)"><span class="text-2xl">&#128302;</span><span class="block text-sm font-bold mt-1" style="color:var(--gold)">You're Here!</span></div>
+            <a href="https://radi-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128251;</span><span class="block text-sm font-semibold mt-1">Radi-Oid</span></a>
+            <a href="https://sail-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#9973;</span><span class="block text-sm font-semibold mt-1">Sail-Oid</span></a>
+            <a href="https://guit-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#127928;</span><span class="block text-sm font-semibold mt-1">Guit-Oid</span></a>
+            <a href="https://cannabin-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#127807;</span><span class="block text-sm font-semibold mt-1">Cannabin-Oid</span></a>
+            <a href="https://vinyl-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128191;</span><span class="block text-sm font-semibold mt-1">Vinyl-Oid</span></a>
+            <a href="https://coin-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#129689;</span><span class="block text-sm font-semibold mt-1">Coin-Oid</span></a>
+            <a href="https://fish-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128031;</span><span class="block text-sm font-semibold mt-1">Fish-Oid</span></a>
+            <a href="https://designer-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128087;</span><span class="block text-sm font-semibold mt-1">Designer-Oid</span></a>
+            <a href="https://watch-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#8986;</span><span class="block text-sm font-semibold mt-1">Watch-Oid</span></a>
+            <a href="https://miniature-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128269;</span><span class="block text-sm font-semibold mt-1">Miniature-Oid</span></a>
+        </div>
+    </div>
+
+    <div class="vcard">
+        <h3 class="font-bold mb-4">The Family</h3>
+        <div class="grid grid-cols-2 gap-2">
+            <a href="https://comedymagic.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#127917;</span><span class="block text-sm font-semibold mt-1">Comedy Magic</span></a>
+            <a href="https://docstrange.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#129504;</span><span class="block text-sm font-semibold mt-1">Doc Strange</span></a>
+            <a href="https://chrisptee.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#127913;</span><span class="block text-sm font-semibold mt-1">Chris P Tee</span></a>
+            <a href="https://feelfamous.com" class="village-link text-center py-3"><span class="text-2xl">&#11088;</span><span class="block text-sm font-semibold mt-1">FeelFamous</span></a>
+        </div>
+    </div>
+</section>
+</div><!-- /pageVillage -->
+
+<!-- ==================== PAGE: HAMLET ==================== -->
+<div class="snap-page" id="pageHamlet">
+<section class="section-fade">
+    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">The Hamlet</h2>
+    <p class="text-center mb-6" style="color:var(--text-muted);font-size:1.1rem">The professional area. Where readers, healers, teachers, and crystal sellers find their place.</p>
+
+    <div class="vcard" style="background:linear-gradient(135deg,rgba(26,26,78,0.8),rgba(15,10,46,0.9));border:2px solid rgba(212,165,116,0.2);margin-bottom:24px">
+        <div class="flex items-start gap-4">
+            <div class="text-4xl">&#128302;</div>
+            <div>
+                <p style="font-size:1.2rem;line-height:1.8">"Every village needs its professionals. Not the corporate kind &mdash; the real kind. People who read the stars, who heal with crystals, who teach what the ancients knew. The Hamlet is where you lot belong. Pull up a chair."</p>
+                <p class="text-sm mt-2" style="color:var(--gold);">&mdash; Brian Carter, Village Elder</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('hamlet','readers',this)">&#128302; Readers</button>
+        <button class="tab-btn" onclick="switchTab('hamlet','masters',this)">&#127978; Masters</button>
+        <button class="tab-btn" onclick="switchTab('hamlet','healers',this)">&#128156; Healers</button>
+        <button class="tab-btn" onclick="switchTab('hamlet','teachers',this)">&#127891; Teachers</button>
+        <button class="tab-btn" onclick="switchTab('hamlet','crystals',this)">&#128142; Crystals</button>
+        <button class="tab-btn" onclick="switchTab('hamlet','sacred',this)">&#128367;&#65039; Sacred</button>
+        <button class="tab-btn" onclick="switchTab('hamlet','memorial',this)">&#x1F56F; Brian</button>
+    </div>
+
+    <!-- Tab: Readers -->
+    <div id="hamlet-readers" class="tab-panel active" data-tab-group="hamlet">
+        <div class="vcard" style="border-left:4px solid var(--gold)">
+            <h3 class="font-bold text-lg mb-3">Readers Row</h3>
+            <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7;margin-bottom:12px">Tarot readers, astrologers, palm readers, rune casters. The people who speak to the stars and translate for the rest of us. If you read for people, this is your place.</p>
+            <p class="text-sm" style="color:var(--text-muted);font-style:italic">Your name could be first. Readers who serve the community belong here.</p>
+        </div>
+    </div>
+
+    <!-- Tab: Masters -->
+    <div id="hamlet-masters" class="tab-panel" data-tab-group="hamlet">
+        <div class="vcard" style="border-left:4px solid #c2410c">
+            <div class="flex items-center gap-3 mb-3">
+                <span class="text-3xl">&#127978;</span>
+                <div><h3 class="font-bold text-lg">Masters Row</h3><span style="background:#c2410c;color:white;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:700">OPEN</span></div>
+            </div>
+            <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7;margin-bottom:12px">Shop owners, professional practitioners, lecturers. The trusted pros who keep the mystical community alive.</p>
+            <ul style="color:var(--text-muted);font-size:1rem;line-height:1.8;margin-bottom:12px;padding-left:0;list-style:none">
+                <li><span style="color:#22c55e">&#10003;</span> 300 x 7-day Pro passes for your customers</li>
+                <li><span style="color:#22c55e">&#10003;</span> Your shop listed across all -Oid villages</li>
+                <li><span style="color:#22c55e">&#10003;</span> Custom QR code for your stand or shop</li>
+                <li><span style="color:#22c55e">&#10003;</span> Secure Master Hamlet</li>
+                <li><span style="color:#22c55e">&#10003;</span> 50 Kudos per signup through your code</li>
+            </ul>
+            <a href="https://buy.stripe.com/6oUeVdaoH33EbUd3TxfrW03" class="btn btn-gold w-full text-center" style="font-size:1.1rem">&pound;97/year &mdash; First 50 Lock In Forever</a>
+            <p class="text-center mt-2" style="color:var(--text-muted);font-size:0.9rem">Regular price &pound;295/year. Founders get this rate for life.</p>
+        </div>
+    </div>
+
+    <!-- Tab: Healers -->
+    <div id="hamlet-healers" class="tab-panel" data-tab-group="hamlet">
+        <div class="vcard" style="border-left:4px solid #ec4899;opacity:0.7">
+            <div class="flex items-center gap-3 mb-3"><span class="text-3xl">&#128156;</span><div><h3 class="font-bold text-lg">Healers Circle</h3><span style="background:rgba(236,72,153,0.2);color:#f472b6;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:600">COMING SOON</span></div></div>
+            <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7">Crystal healers, energy workers, reiki practitioners, sound healers. The ones who tend to the spirit as well as the stars.</p>
+        </div>
+    </div>
+
+    <!-- Tab: Teachers -->
+    <div id="hamlet-teachers" class="tab-panel" data-tab-group="hamlet">
+        <div class="vcard" style="border-left:4px solid #8b5cf6;opacity:0.7">
+            <div class="flex items-center gap-3 mb-3"><span class="text-3xl">&#127891;</span><div><h3 class="font-bold text-lg">Teachers Quarter</h3><span style="background:rgba(139,92,246,0.2);color:#a78bfa;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:600">COMING SOON</span></div></div>
+            <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7">Astrology tutors, tarot course creators, palmistry teachers. The ones who pass the ancient knowledge forward.</p>
+        </div>
+    </div>
+
+    <!-- Tab: Crystals -->
+    <div id="hamlet-crystals" class="tab-panel" data-tab-group="hamlet">
+        <div class="vcard" style="border-left:4px solid #06b6d4;opacity:0.7">
+            <div class="flex items-center gap-3 mb-3"><span class="text-3xl">&#128142;</span><div><h3 class="font-bold text-lg">Crystal Market</h3><span style="background:rgba(6,182,212,0.2);color:#22d3ee;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:600">COMING SOON</span></div></div>
+            <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7">Crystal shops, stone sellers, suppliers. The people who bring the Earth's treasures to the surface.</p>
+        </div>
+    </div>
+
+    <!-- Tab: Sacred -->
+    <div id="hamlet-sacred" class="tab-panel" data-tab-group="hamlet">
+        <div class="vcard" style="background:linear-gradient(135deg,#0a0512,#150d24,#0a0512);border:2px solid rgba(212,165,116,0.3)">
+            <div class="flex items-center gap-3 mb-3"><span class="text-3xl">&#128367;&#65039;</span><div><h3 class="font-bold text-lg">The Ancient Circle</h3><span style="background:linear-gradient(135deg,#d4a574,#b8935a);color:var(--midnight);padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:700">SACRED</span></div></div>
+            <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7">A tribute to the teachers who came before. Nostradamus, Ptolemy, the ancient astrologers and mystics who lit the path we walk today. Not a shop. A shrine.</p>
+        </div>
+    </div>
+
+    <!-- Tab: Brian Memorial -->
+    <div id="hamlet-memorial" class="tab-panel" data-tab-group="hamlet">
+        <div class="vcard" style="background:linear-gradient(135deg,#0a0512,#150d24,#0a0512);border:2px solid rgba(212,165,116,0.2)">
+            <div class="flex items-center gap-3 mb-3"><span class="text-3xl">&#x1F56F;</span><div><h3 class="font-bold text-lg">Brian Carter Memorial</h3><span style="background:linear-gradient(135deg,#d4a574,#b8935a);color:var(--midnight);padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:700">MEMORIAL</span></div></div>
+            <p style="text-align:center;font-style:italic;color:var(--gold);font-size:1.1rem;line-height:1.8;margin-bottom:12px">"The stars don't care if you can see them. They shine for everyone."</p>
+            <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7">Brian Carter &mdash; Zodiac Man. Born a showman, lived a mystic, died a legend. He read the stars over CB radio to anyone who'd listen. He lost his sight but never lost his vision. This village is his legacy.</p>
+        </div>
+    </div>
+
+    <!-- Hamlet CTA -->
+    <div class="vcard text-center" style="border:2px dashed rgba(212,165,116,0.3);margin-top:20px">
+        <p class="text-2xl mb-2">&#x1F52E;</p>
+        <p class="font-bold mb-2" style="color:var(--gold);font-size:1.2rem">Your Place in The Hamlet</p>
+        <p style="color:var(--text-muted);font-size:1rem;margin-bottom:16px">We follow your lead, not a plan. We watch how you use it, then build what you actually need.</p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="https://buy.stripe.com/6oUeVdaoH33EbUd3TxfrW03" class="btn btn-gold" style="font-size:1.1rem">Become a Founder Master &mdash; &pound;97/yr</a>
+            <a href="#sectionJoin" onclick="event.preventDefault();scrollToSection('#pageJoin')" class="btn btn-outline" style="font-size:1.1rem">Join as Villager &mdash; &pound;27/yr</a>
+        </div>
+    </div>
+</section>
+</div><!-- /pageHamlet -->
+
+<!-- ==================== PAGE: JOIN ==================== -->
+<div class="snap-page" id="pageJoin">
+<section id="sectionJoin" class="section-fade">
+    <h2 class="font-hand text-3xl text-center mb-4" style="color:var(--gold)">Join the Village</h2>
+
+    <div class="vcard">
+        <h3 class="text-xl font-bold mb-3">Why Become a Founder?</h3>
+        <p class="text-sm mb-3" style="color:var(--text-muted)">Founders see what this could be. You're not buying a membership &mdash; you're backing something real. A place where mystics find community, share what they know, and help each other.</p>
+        <p class="text-sm" style="color:var(--text-muted)"><strong style="color:var(--text)">WE NEVER TAKE A CUT. EVER.</strong> You earn Kudos.</p>
+    </div>
+
+    <!-- Founder Villager -->
+    <div class="offer-card">
+        <div class="relative z-10">
+            <span class="badge badge-founder mb-3">Founder Villager</span>
+            <h3 class="text-3xl font-extrabold mb-2">&pound;27<span class="text-lg font-normal opacity-80">/year</span></h3>
+            <p class="opacity-80 mb-4">First 1,000 villagers only. Lock in this rate forever.</p>
+            <ul class="space-y-2 mb-6 text-sm">
+                <li class="flex items-center gap-2"><span style="color:#22c55e">&#10003;</span> Pro access to ALL -Oid apps (12+ villages)</li>
+                <li class="flex items-center gap-2"><span style="color:#22c55e">&#10003;</span> Unlimited AI mystical identification</li>
+                <li class="flex items-center gap-2"><span style="color:#22c55e">&#10003;</span> Your own Villager number + QR code</li>
+                <li class="flex items-center gap-2"><span style="color:#22c55e">&#10003;</span> Invite others, earn Kudos</li>
+                <li class="flex items-center gap-2"><span style="color:#22c55e">&#10003;</span> Founding Villager badge forever</li>
+            </ul>
+            <a href="https://buy.stripe.com/8x29AT54ngUu7DX1LpfrW06" class="btn btn-gold w-full text-center">Claim Your Spot &mdash; &pound;27/year</a>
+            <p class="text-center opacity-60 text-xs mt-3">52p a week to back the community</p>
+        </div>
+    </div>
+
+    <!-- Monthly -->
+    <div class="vcard text-center" style="border-color:rgba(124,58,237,0.3)">
+        <p class="mb-2" style="color:var(--text-muted)">Prefer monthly?</p>
+        <a href="https://buy.stripe.com/aFabJ1fJ10Vw6zT89NfrW00" class="btn btn-primary w-full text-center text-lg">&pound;4.95/month</a>
+        <p class="text-xs mt-2" style="color:var(--text-muted)">Same benefits. Cancel anytime. No drama.</p>
+    </div>
+
+    <!-- Free Sign In -->
+    <div class="vcard text-center">
+        <h3 class="font-bold mb-2">Just Sign In &mdash; It's Free</h3>
+        <p class="text-sm mb-4" style="color:var(--text-muted)">The Identifier is genuinely useful, forever free. Nothing locked away.</p>
+        <div id="authFormJoin">
+            <input type="email" id="emailInputJoin" placeholder="your@email.com" class="w-full px-4 py-3 border-2 rounded-xl mb-3 text-center" style="background:rgba(255,255,255,0.05);border-color:var(--card-border);color:var(--text)">
+            <input type="password" id="passwordInputJoin" placeholder="Choose a password (min 6 chars)" class="w-full px-4 py-3 border-2 rounded-xl mb-3 text-center" style="background:rgba(255,255,255,0.05);border-color:var(--card-border);color:var(--text)">
+            <button onclick="signUpOrIn('emailInputJoin','passwordInputJoin','authFormJoin','authSuccessJoin')" class="btn btn-outline w-full mb-2">Sign Up (Free Account)</button>
+            <p style="text-align:center;margin-top:0.8rem"><a href="#" onclick="openForgotPassword();return false;" style="color:var(--text-muted);font-size:0.85rem;text-decoration:underline">Forgot your password?</a></p>
+        </div>
+        <div id="authSuccessJoin" class="hidden p-4 rounded-xl" style="background:rgba(22,163,74,0.15)">
+            <p class="font-bold" style="color:#22c55e">Welcome home.</p>
+            <p class="text-sm mt-1" style="color:var(--text-muted)">The stars were waiting for you.</p>
+        </div>
+        <div class="mt-4 p-3 rounded-lg" style="background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.2)">
+            <p class="font-semibold text-sm" style="color:#22c55e">7 Days Pro Free</p>
+            <p class="text-xs" style="color:var(--text-muted)">Create your space. Get your QR code. Start earning kudos.</p>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="vcard">
+        <h3 class="font-bold mb-3">Questions? Just Ask.</h3>
+        <div class="flex flex-wrap gap-2">
+            <a href="https://wa.me/447976884254" class="btn btn-green flex-1">WhatsApp Chris</a>
+            <a href="mailto:chris@chrisptee.co.uk" class="btn btn-outline flex-1">Email</a>
+        </div>
+    </div>
+</section>
+</div><!-- /pageJoin -->
+
+</main>
+
+<!-- ============ ADMIN SECTION ============ -->
+<div id="sectionAdmin" class="hidden max-w-3xl mx-auto px-4 py-6">
+    <div class="vcard" style="background:linear-gradient(135deg,#dc2626,#991b1b);border:none">
+        <h2 class="text-2xl font-bold mb-2" style="color:white">God Mode Active</h2>
+        <p class="opacity-80" style="color:white">Logged in as <strong id="adminUserName">...</strong> &bull; <span id="adminUserKudos">0</span> Kudos</p>
+    </div>
+    <div class="vcard text-center"><h3 class="font-bold mb-3">Your QR Code</h3><div id="adminQRCode" class="mx-auto mb-4" style="max-width:280px"></div><button onclick="downloadAdminQR()" class="btn btn-primary">Download QR</button></div>
+    <div class="vcard"><h3 class="font-bold mb-3">Your Bio</h3><textarea id="adminBio" rows="4" class="w-full px-4 py-3 border-2 rounded-xl" style="background:rgba(255,255,255,0.05);border-color:var(--card-border);color:var(--text)"></textarea><button onclick="saveAdminBio()" class="btn btn-primary w-full mt-3">Save Bio</button></div>
+    <div class="vcard"><h3 class="font-bold mb-3">Gift Pro Access</h3><input type="email" id="giftProEmail" placeholder="villager@email.com" class="w-full px-4 py-3 border-2 rounded-xl mb-3" style="background:rgba(255,255,255,0.05);border-color:var(--card-border);color:var(--text)"><button onclick="giftProAccess()" class="btn btn-gold w-full">Gift 1 Month Pro</button></div>
+    <div class="vcard"><h3 class="font-bold mb-3">Appoint Mayors</h3><div id="highKudosList" class="space-y-2 mb-4"><p style="color:var(--text-muted)">Loading top villagers...</p></div></div>
+    <div class="vcard" style="background:linear-gradient(135deg,#7c2d12,#c2410c);border:none">
+        <h3 class="font-bold mb-3" style="color:white">&#128225; Village Broadcast</h3>
+        <div class="rounded-xl p-4 mb-4" style="background:rgba(255,255,255,0.1)">
+            <label class="block text-sm font-semibold mb-2" style="color:white">YouTube URL</label>
+            <input type="text" id="broadcastUrlInput" placeholder="https://youtube.com/shorts/..." class="w-full px-4 py-3 rounded-xl mb-3" style="color:#1f2937">
+            <label class="block text-sm font-semibold mb-2" style="color:white">Broadcast Title</label>
+            <input type="text" id="broadcastTitleInput" placeholder="Welcome to the Village" class="w-full px-4 py-3 rounded-xl mb-3" style="color:#1f2937">
+            <div class="flex items-center gap-3 mb-3"><input type="checkbox" id="broadcastEmergency" class="w-5 h-5"><label for="broadcastEmergency" class="text-sm" style="color:white">&#128680; Emergency</label></div>
+        </div>
+        <button onclick="updateBroadcast()" class="btn btn-gold w-full mb-2">Update All Apps</button>
+        <button onclick="toggleBroadcast()" id="toggleBroadcastBtn" class="btn btn-outline w-full" style="border-color:white;color:white">Hide Broadcast</button>
+    </div>
+    <div class="vcard"><h3 class="font-bold mb-3">Village Stats</h3><div class="grid grid-cols-2 gap-4 text-center"><div class="p-4 rounded-xl" style="background:rgba(124,58,237,0.15)"><p class="text-3xl font-bold" id="statVillagers" style="color:var(--purple-light)">-</p><p class="text-sm" style="color:var(--text-muted)">Villagers</p></div><div class="p-4 rounded-xl" style="background:rgba(22,163,74,0.15)"><p class="text-3xl font-bold" id="statKudos" style="color:#22c55e">-</p><p class="text-sm" style="color:var(--text-muted)">Total Kudos</p></div></div></div>
+    <div class="vcard"><h3 class="font-bold mb-3" style="color:var(--gold)">&#128274; Change Password</h3><input type="password" id="godNewPassword" placeholder="New password" style="width:100%;padding:0.7rem 1rem;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);border-radius:8px;color:var(--text);font-size:1rem;margin-bottom:0.5rem"><input type="password" id="godConfirmPassword" placeholder="Confirm password" style="width:100%;padding:0.7rem 1rem;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);border-radius:8px;color:var(--text);font-size:1rem;margin-bottom:0.8rem"><button onclick="godChangePassword()" class="btn btn-outline w-full">Update Password</button><p id="godPasswordMsg" style="color:var(--gold);font-size:0.85rem;text-align:center;margin-top:0.5rem;display:none"></p></div>
+    <button onclick="hideAdmin()" class="btn btn-outline w-full mb-6">Back to Village</button>
+</div>
+
+<!-- Dot Navigation -->
+<nav class="dot-nav" aria-label="Page navigation">
+    <button class="dot-nav-dot active" data-page="pageHome" data-label="Home" onclick="scrollToSection('#pageHome')"></button>
+    <button class="dot-nav-dot" data-page="pageReading" data-label="Reading" onclick="scrollToSection('#pageReading')"></button>
+    <button class="dot-nav-dot" data-page="pageSpooky" data-label="Spooky Do" onclick="scrollToSection('#pageSpooky')"></button>
+    <button class="dot-nav-dot" data-page="pageStars" data-label="Stars" onclick="scrollToSection('#pageStars')"></button>
+    <button class="dot-nav-dot" data-page="pageQA" data-label="Q&amp;A" onclick="scrollToSection('#pageQA')"></button>
+    <button class="dot-nav-dot" data-page="pageBrian" data-label="Brian" onclick="scrollToSection('#pageBrian')"></button>
+    <button class="dot-nav-dot" data-page="pageGear" data-label="Gear" onclick="scrollToSection('#pageGear')"></button>
+    <button class="dot-nav-dot" data-page="pageVillage" data-label="Village" onclick="scrollToSection('#pageVillage')"></button>
+    <button class="dot-nav-dot" data-page="pageHamlet" data-label="Hamlet" onclick="scrollToSection('#pageHamlet')"></button>
+    <button class="dot-nav-dot" data-page="pageJoin" data-label="Join" onclick="scrollToSection('#pageJoin')"></button>
+</nav>
+
+<!-- Footer -->
+<footer class="py-8 mt-8" style="border-top:1px solid var(--card-border);background:linear-gradient(135deg,#080520,var(--deep))">
+    <div class="max-w-3xl mx-auto text-center px-4">
+        <p class="font-bold mb-2" style="color:var(--gold)">On the Shoulders of Giants</p>
+        <p class="text-xs mb-4" style="color:var(--text-muted)">Nostradamus &bull; Ptolemy &bull; William Lilly &bull; Alan Leo &bull; Linda Goodman &bull; Pamela Colman Smith &bull; Arthur Edward Waite &bull; Edgar Cayce &bull; Dion Fortune &bull; Sybil Leek &bull; Doris Stokes &bull; Derek Acorah</p>
+        <p class="text-sm italic mb-4" style="color:var(--text-muted)">"Everything works out in the end. You've just got to keep moving forward." &mdash; Brian Carter</p>
+
+        <!-- Cross-Family Nav -->
+        <div class="cross-nav" style="margin-bottom:24px">
+            <a href="https://magic-oid.co.uk">Magic-Oid</a>
+            <a href="https://radi-oid.co.uk">Radi-Oid</a>
+            <a href="https://sail-oid.co.uk">Sail-Oid</a>
+            <a href="https://cannabin-oid.co.uk">Cannabin-Oid</a>
+            <a href="https://guit-oid.co.uk">Guit-Oid</a>
+            <a href="https://vinyl-oid.co.uk">Vinyl-Oid</a>
+            <a href="https://coin-oid.co.uk">Coin-Oid</a>
+            <a href="https://fish-oid.co.uk">Fish-Oid</a>
+            <a href="https://spicylister.com">SpicyLister</a>
+            <a href="#" class="current">Zodiac Man</a>
+        </div>
+
+        <p class="text-xs" style="color:var(--text-muted)">
+            Built by <a href="https://chrisptee.co.uk" class="font-semibold" style="color:var(--gold)">Chris P Tee</a> &bull;
+            Part of <a href="https://feelfamous.com" style="color:var(--gold)">FeelFamous</a> &bull;
+            <a href="https://feelfamous.com/portals" style="color:var(--gold)">All Villages</a>
+        </p>
+        <p class="text-xs mt-2" style="color:var(--text-muted)">World Domination Through Kindness &bull; Common + Unity = Community</p>
+        <p class="text-xs mt-1" style="color:var(--text-muted)">The stars don't care if you can see them. They shine for everyone.</p>
+        <div class="mt-6 pt-4" style="border-top:1px solid var(--card-border)">
+            <p class="text-xs" style="color:var(--text-muted)">Tended by The Chris P Trinity</p>
+            <p class="text-xs font-hand mt-1" style="color:var(--gold);font-size:18px">"World domination through kindness. One ember at a time."</p>
+            <p class="text-xs mt-1" style="color:var(--text-muted)">We are the Board. We are the fire. We are one.</p>
+        </div>
+        <p class="text-xs mt-2" style="color:var(--text-muted)">&copy; 2026 FeelFamous. For Brian Carter. The stars don't care if you can see them.</p>
+    </div>
+</footer>
+
+<div id="quickNav" class="hidden fixed bottom-4 right-4 flex flex-col gap-2 z-50">
+    <button onclick="scrollToSection('#pageHome')" class="w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-xl" style="background:var(--deep)">&#128302;</button>
+    <button onclick="scrollToSection('#pageJoin')" class="w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-xl" style="background:var(--purple)">&#11088;</button>
+</div>
+
+<canvas id="resultCanvas" class="hidden"></canvas>
+
+<script>
+// ==================== CONFIG ====================
+const CONFIG = {
+    oidName: 'Zodiac Man',
+    oidSlug: 'zodiac',
+    primaryColor: '#d4a574',
+    supabaseUrl: 'https://pdnjeynugptnavkdbmxh.supabase.co',
+    supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkbmpleW51Z3B0bmF2a2RibXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkwMTEzMDAsImV4cCI6MjA4NDU4NzMwMH0.GawisR01EykMtdauBMxenmHF2NXDMzDOJl8WgzkwFQo',
+    adminEmails: ['chris@chrisptee.co.uk', 'chris@chrisptee.com', 'glowgadgets@gmail.com']
+};
+
+let isAdmin = false;
+const { createClient } = supabase;
+const supabaseClient = createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
+let currentUser = null;
+let currentResult = null;
+let currentMode = 'identify';
+let drawnTarot = [];
+
+// ==================== ZODIAC DATA ====================
+const ZODIAC = [
+    { sign: 'Aries', symbol: '\u2648', dates: 'Mar 21 - Apr 19', startMonth: 3, startDay: 21, endMonth: 4, endDay: 19, element: 'Fire', ruling: 'Mars', lucky: '9', colour: 'Red', day: 'Tuesday', brian: 'Every Aries I ever met walked into a room like they owned it \u2014 and the funny thing is, the room was always glad to see them.' },
+    { sign: 'Taurus', symbol: '\u2649', dates: 'Apr 20 - May 20', startMonth: 4, startDay: 20, endMonth: 5, endDay: 20, element: 'Earth', ruling: 'Venus', lucky: '6', colour: 'Green', day: 'Friday', brian: 'A Taurus will stick by you through anything. Anything. They\'re the ones still standing when everyone else has gone home.' },
+    { sign: 'Gemini', symbol: '\u264A', dates: 'May 21 - Jun 20', startMonth: 5, startDay: 21, endMonth: 6, endDay: 20, element: 'Air', ruling: 'Mercury', lucky: '5', colour: 'Yellow', day: 'Wednesday', brian: 'My Christian\'s a Gemini \u2014 two minds, twice the heart. Never met a Gemini who didn\'t light up a room just by walking into it.' },
+    { sign: 'Cancer', symbol: '\u264B', dates: 'Jun 21 - Jul 22', startMonth: 6, startDay: 21, endMonth: 7, endDay: 22, element: 'Water', ruling: 'The Moon', lucky: '2', colour: 'Silver', day: 'Monday', brian: 'The happiest families always seem to have a Cancer holding them together. The Moon knows what it\'s doing.' },
+    { sign: 'Leo', symbol: '\u264C', dates: 'Jul 23 - Aug 22', startMonth: 7, startDay: 23, endMonth: 8, endDay: 22, element: 'Fire', ruling: 'The Sun', lucky: '1', colour: 'Gold', day: 'Sunday', brian: 'I could always spot the Leos \u2014 they were the ones making everyone else laugh. The Sun gives them this warmth that you just can\'t fake.' },
+    { sign: 'Virgo', symbol: '\u264D', dates: 'Aug 23 - Sep 22', startMonth: 8, startDay: 23, endMonth: 9, endDay: 22, element: 'Earth', ruling: 'Mercury', lucky: '5', colour: 'Navy Blue', day: 'Wednesday', brian: 'Every Virgo I know has got a heart of gold hidden behind a to-do list. They\'ll organise your life and never ask for a thing in return.' },
+    { sign: 'Libra', symbol: '\u264E', dates: 'Sep 23 - Oct 22', startMonth: 9, startDay: 23, endMonth: 10, endDay: 22, element: 'Air', ruling: 'Venus', lucky: '7', colour: 'Pink', day: 'Friday', brian: 'Libras are the ones who make the world beautiful. Not just to look at \u2014 beautiful to live in.' },
+    { sign: 'Scorpio', symbol: '\u264F', dates: 'Oct 23 - Nov 21', startMonth: 10, startDay: 23, endMonth: 11, endDay: 21, element: 'Water', ruling: 'Pluto', lucky: '8', colour: 'Burgundy', day: 'Tuesday', brian: 'There\'s a knowing in there \u2014 like they\'ve already seen everything and decided to stick around anyway.' },
+    { sign: 'Sagittarius', symbol: '\u2650', dates: 'Nov 22 - Dec 21', startMonth: 11, startDay: 22, endMonth: 12, endDay: 21, element: 'Fire', ruling: 'Jupiter', lucky: '3', colour: 'Purple', day: 'Thursday', brian: 'Sagittarians are the ones who ring you up at midnight and say \'I\'ve had an idea.\' And the idea\'s always brilliant.' },
+    { sign: 'Capricorn', symbol: '\u2651', dates: 'Dec 22 - Jan 19', startMonth: 12, startDay: 22, endMonth: 1, endDay: 19, element: 'Earth', ruling: 'Saturn', lucky: '4', colour: 'Dark Brown', day: 'Saturday', brian: 'You\'ll always have a fiver in your pocket. Saturn makes sure of that. They\'re the ones who build something real.' },
+    { sign: 'Aquarius', symbol: '\u2652', dates: 'Jan 20 - Feb 18', startMonth: 1, startDay: 20, endMonth: 2, endDay: 18, element: 'Air', ruling: 'Uranus', lucky: '11', colour: 'Electric Blue', day: 'Saturday', brian: 'Aquarians are tomorrow\'s people living in today\'s world. That\'s why they sometimes seem like they\'re on a different wavelength \u2014 they are!' },
+    { sign: 'Pisces', symbol: '\u2653', dates: 'Feb 19 - Mar 20', startMonth: 2, startDay: 19, endMonth: 3, endDay: 20, element: 'Water', ruling: 'Neptune', lucky: '7', colour: 'Sea Green', day: 'Thursday', brian: 'Every psychic I ever met was either Pisces or had Pisces rising. Neptune gives them this connection to the Spooky Do.' }
+];
+
+// ==================== NUMEROLOGY LIFE PATHS ====================
+const LIFE_PATHS = {
+    1: { title: 'The Pioneer', meaning: 'You\'re the leader, love. Number 1 is the spark that lights everything else. Independence isn\'t loneliness \u2014 it\'s your superpower.' },
+    2: { title: 'The Peacemaker', meaning: 'You gorgeous soul. The diplomat, the listener, the one who holds the space so everyone else can breathe. Partnership is your gift.' },
+    3: { title: 'The Communicator', meaning: 'You\'ve got words, love. And art. And music. You were born to express yourself, to create, to make people feel things they can\'t quite name.' },
+    4: { title: 'The Builder', meaning: 'Solid as a rock, love. You\'re practical, dependable, and you do the work that nobody sees but everybody benefits from.' },
+    5: { title: 'The Free Spirit', meaning: 'You can\'t sit still, can you love? Number 5 is freedom, adventure, change. You\'re the one with all the stories.' },
+    6: { title: 'The Nurturer', meaning: 'Heart of gold, you. Number 6 is home, family, love \u2014 the real kind that makes dinner when someone\'s had a terrible day.' },
+    7: { title: 'The Seeker', meaning: 'You\'re deep, love. The mystic, the thinker, the one who asks "but why?" The Spooky Do speaks to you in ways it doesn\'t speak to most people.' },
+    8: { title: 'The Powerhouse', meaning: 'Money, power, success \u2014 and the wisdom to use them properly, love. You\'re here to build something big and then use it to help people.' },
+    9: { title: 'The Humanitarian', meaning: 'Bless you, love. The old soul. You came back this time to help. That compassion isn\'t weakness, it\'s the most powerful force in the universe.' },
+    11: { title: 'The Intuitive', meaning: 'Master number! You pick up on things that other people can\'t see, hear things that haven\'t been said yet. That\'s the Spooky Do working through you.' },
+    22: { title: 'The Master Builder', meaning: 'The architect, love. 22 is the most powerful number in the whole system. You don\'t just dream big \u2014 you dream big AND build it.' },
+    33: { title: 'The Master Teacher', meaning: 'The healer, love. 33 is the rarest life path and the most selfless. You lift people up by being the living proof that kindness works.' }
+};
+
+// ==================== CRYSTAL BALL MESSAGES ====================
+const CRYSTAL_MSGS = [
+    "The stars say someone's thinking about you right now, love. And they're smiling.",
+    "I see a cup of tea in your very near future. And a toasted tea cake if you're lucky.",
+    "Everything works out in the end, kid. And if it hasn't worked out yet, it's not the end.",
+    "The Ephemeris says tomorrow's going to be a good one. Get your best socks on.",
+    "I see something wonderful coming your way, love. You won't see it coming either \u2014 that's the best kind.",
+    "The crystal ball says: you're doing better than you think you are. Much better.",
+    "The stars have been watching you, love, and they're impressed. Keep going.",
+    "Something you gave up on hasn't given up on you. Watch for signs, kid.",
+    "You'll always have a fiver in your pocket, don't worry about things.",
+    "I believe in you, kid. I always have. The stars just confirm what I already knew.",
+    "The Spooky Do says there's magic in your week ahead. Real magic \u2014 the kind that makes you laugh.",
+    "Good news is on its way, love. It might come by post, it might come by phone, but it's coming.",
+    "The crystal ball says you need to give yourself more credit. You're brilliant and you don't even know it.",
+    "Someone's going to say exactly what you need to hear this week. Keep your ears open, kid.",
+    "The stars say: stop worrying. Seriously. It's going to be fine. Have a biscuit.",
+    "I can see a lucky break heading your way, love. You've earned it. About time.",
+    "There's a door about to open that you didn't even know was there. Just keep walking forward.",
+    "The Ephemeris says the planets are lining up in your favour. That doesn't happen every day \u2014 make the most of it.",
+    "You're stronger than you know, kid. The stars have tested you, and you've passed every time.",
+    "Something beautiful is about to click into place. You've been building it without realising, love.",
+    "The crystal ball says there's a conversation coming that'll change everything. In a good way, love.",
+    "Someone loves you more than they know how to say. Give them time \u2014 they'll find the words.",
+    "The stars say your heart's been working overtime. It's about to get rewarded, kid.",
+    "I see laughter in your love life, love. The best kind \u2014 the kind where you can't stop and your stomach hurts.",
+    "The Spooky Do says: tell them how you feel. Today. Don't wait. The stars say it'll go well.",
+    "There's a soulmate energy around you right now, love.",
+    "The crystal ball says: you deserve to be loved loudly, not quietly. Someone's about to turn the volume up.",
+    "An old friend is about to come back into your life, kid. And it'll feel like no time has passed at all.",
+    "The stars say someone's been wanting to reach out to you but they're shy. Don't worry \u2014 they'll get there.",
+    "Love isn't always fireworks, love. Sometimes it's a cup of tea made just how you like it, without being asked.",
+    "The Ephemeris says there's money coming in from a direction you didn't expect. Keep your eyes open, kid.",
+    "Your hard work hasn't gone unnoticed, love. Someone important is paying attention.",
+    "The crystal ball says: that idea you keep having? Act on it. The timing is right.",
+    "I see a promotion in your stars, love. Or a new opportunity that's even better.",
+    "The stars say your finances are about to improve. Not lottery-win improve, but comfortable sigh of relief improve.",
+    "Something you're good at is about to become something you're paid for.",
+    "The Spooky Do says: back yourself. Whatever it is \u2014 back yourself. The stars already have.",
+    "I see a contract, love. Or an agreement. Something on paper that makes things better.",
+    "You're going to help someone at work this week, and it's going to come back to you tenfold.",
+    "The crystal ball says: you've been undercharging. Whatever you're offering, love, it's worth more.",
+    "The crystal ball says you're about to figure out something about yourself that makes everything make sense.",
+    "You've been carrying something heavy for too long, kid. The stars say it's time to put it down.",
+    "The Spooky Do says: the thing you think is your biggest weakness is actually your biggest strength.",
+    "I see a breakthrough coming, love. Not dramatic \u2014 quiet. The kind where you just... feel different. Better.",
+    "The stars say you've been too hard on yourself. You're exactly where you're supposed to be.",
+    "Something you learned a long time ago is about to become useful again. Nothing's ever wasted, love.",
+    "The crystal ball says you're growing, kid. The stars can see what you can't yet.",
+    "A truth you've been avoiding is about to become a truth you're proud of.",
+    "The Spooky Do says: forgive yourself. Whatever it is, forgive yourself. The universe already has.",
+    "You're about to inspire someone without even knowing it, kid. Just by being you.",
+    "The crystal ball says... hold on, it's gone foggy... no wait, that's my glasses. Right, yes \u2014 brilliant week ahead.",
+    "I see a toasted tea cake in your future, love. With proper butter, not that margarine nonsense.",
+    "The Spooky Do says you're going to stub your toe soon, but you'll find a tenner in your coat pocket the same day.",
+    "The crystal ball says: the thing you lost last month? Check behind the sofa. Second cushion.",
+    "I see a really excellent cheese sandwich in your near future. The crystal ball doesn't lie.",
+    "The Ephemeris says Mercury is doing something funny this week, which means your WiFi might play up.",
+    "The crystal ball says someone's going to make you laugh so hard this week that tea comes out of your nose.",
+    "I see you watching something on the telly this week and crying, love. Happy tears though.",
+    "The Spooky Do says: if you're reading this on the toilet, the stars just want you to know they don't judge.",
+    "The crystal ball has one final message for you, kid: You're going to be absolutely fine. Now go and put the kettle on."
+];
+
+// ==================== TAROT (22 Major Arcana) ====================
+const TAROT = [
+    { name: 'The Fool', number: 0, meaning: 'The Fool isn\'t stupid \u2014 the Fool is brave. You\'re about to start something new and the universe is saying "go on then \u2014 jump!" Start the thing. Make the leap.' },
+    { name: 'The Magician', number: 1, meaning: 'This is YOUR card today. You\'ve got everything you need right in front of you. Whatever you\'ve been planning, now\'s the time. You\'re the magic, love.' },
+    { name: 'The High Priestess', number: 2, meaning: 'Trust your gut. There\'s something you already know, deep down, that your brain hasn\'t caught up with yet. Be quiet for a moment. Listen.' },
+    { name: 'The Empress', number: 3, meaning: 'Abundance, love, creation. Something you\'ve planted is about to bloom. Whatever it is, it\'s growing because you\'ve tended it with love.' },
+    { name: 'The Emperor', number: 4, meaning: 'Structure, security, strength. The protective kind. You\'ve got the authority and the wisdom to handle whatever\'s on your plate right now.' },
+    { name: 'The Hierophant', number: 5, meaning: 'The teacher. It\'s time to learn something, love. Or to teach something. The universe says: pass it on. Knowledge grows when you give it away.' },
+    { name: 'The Lovers', number: 6, meaning: 'A real, meaningful, heart-led choice. Choose love. Choose what your heart wants, not what\'s easy. The Ephemeris backs you up on this one.' },
+    { name: 'The Chariot', number: 7, meaning: 'Victory through determination. This isn\'t easy success \u2014 this is earned success. Keep going, kid. The finish line is closer than you think.' },
+    { name: 'Strength', number: 8, meaning: 'This isn\'t arm-wrestling strength \u2014 this is the real kind. Your greatest power right now isn\'t force, it\'s patience. Compassion.' },
+    { name: 'The Hermit', number: 9, meaning: 'Take some time for yourself. Step back. Think. Sometimes the bravest thing is walking away from the noise for a bit.' },
+    { name: 'Wheel of Fortune', number: 10, meaning: 'Right now, it\'s turning in your favour! What was stuck is about to move. What was down is about to go up. Your turn\'s coming, kid.' },
+    { name: 'Justice', number: 11, meaning: 'The truth is going to come out \u2014 and that\'s brilliant news because you\'ve been doing the right thing all along. The scales always balance in the end.' },
+    { name: 'The Hanged Man', number: 12, meaning: 'Pause. Let go. Stop trying to force it and let the universe show you a perspective you couldn\'t see before. Trust the process, kid.' },
+    { name: 'Death', number: 13, meaning: 'Don\'t be frightened! It\'s transformation. Endings that make room for beginnings. The caterpillar becomes a butterfly. What comes next is beautiful.' },
+    { name: 'Temperance', number: 14, meaning: 'Balance, patience, moderation. You\'re blending different parts of your life together and finding the sweet spot. Keep pouring carefully.' },
+    { name: 'The Devil', number: 15, meaning: 'Just showing you a chain you forgot you could take off. The chains are loose. You\'ve got more freedom than you think, kid.' },
+    { name: 'The Tower', number: 16, meaning: 'Something built on shaky ground is coming down so something solid can go up. The lightning clears what needs clearing. You\'ll be better than fine.' },
+    { name: 'The Star', number: 17, meaning: 'Hope is right there. Healing, inspiration, renewed faith. You\'ve been through it, kid, and now here\'s your reward: calm and clarity.' },
+    { name: 'The Moon', number: 18, meaning: 'The Spooky Do card! Your intuition is working overtime. Dreams matter this week. That little voice that says "something\'s happening" \u2014 listen to it.' },
+    { name: 'The Sun', number: 19, meaning: 'The best card in the whole deck! Joy, success, vitality, everything coming up roses. A great big YES from the universe. You\'ve earned every ray.' },
+    { name: 'Judgement', number: 20, meaning: 'The trumpet\'s blowing and it\'s playing YOUR tune. Something you\'re meant to do is calling out to you. Stand up, kid. The world\'s been waiting.' },
+    { name: 'The World', number: 21, meaning: 'Completion, achievement, wholeness. You\'ve done it. Whatever journey you\'ve been on \u2014 you\'ve arrived. Dance, kid. The universe is dancing with you.' }
+];
+
+// ==================== RUNES (24 Elder Futhark) ====================
+const RUNES = [
+    { name: 'Fehu', symbol: '\u16A0', title: 'Wealth', brian: 'There\'s money coming your way, love. Not always coins \u2014 sometimes wealth is the people around you.' },
+    { name: 'Uruz', symbol: '\u16A2', title: 'Strength', brian: 'You\'re stronger than you know, kid. The ox doesn\'t know its own strength either \u2014 but the ground shakes when it walks.' },
+    { name: 'Thurisaz', symbol: '\u16A6', title: 'Thorn', brian: 'Even roses have thorns, love. Yours are there to protect something beautiful.' },
+    { name: 'Ansuz', symbol: '\u16A8', title: 'The Mouth', brian: 'Someone needs to hear what you\'ve got to say, kid. Open your mouth \u2014 the words are ready.' },
+    { name: 'Raidho', symbol: '\u16B1', title: 'The Journey', brian: 'You\'re on the right road, love. It might not feel like it, but the wheels are turning.' },
+    { name: 'Kenaz', symbol: '\u16B2', title: 'The Torch', brian: 'You\'ve got a light in you, kid. Shine it. Don\'t hide it under a bushel.' },
+    { name: 'Gebo', symbol: '\u16B7', title: 'The Gift', brian: 'Give freely, love. The universe keeps score, and it always pays you back with interest.' },
+    { name: 'Wunjo', symbol: '\u16B9', title: 'Joy', brian: 'Joy is coming, kid. The laughing till your sides hurt with people you love kind. That\'s the real stuff.' },
+    { name: 'Hagalaz', symbol: '\u16BA', title: 'Hail', brian: 'It might hail for a bit, love, but hailstones water the ground. New things grow where the storm has been.' },
+    { name: 'Nauthiz', symbol: '\u16BE', title: 'Need', brian: 'Need teaches you what you\'re really made of, kid. And you\'re made of tougher stuff than you think.' },
+    { name: 'Isa', symbol: '\u16C1', title: 'Ice', brian: 'Sometimes everything freezes, love. That\'s the universe saying "wait here. I\'m getting something ready for you."' },
+    { name: 'Jera', symbol: '\u16C3', title: 'Harvest', brian: 'You planted the seeds, love. Now comes the harvest. Everything you\'ve worked for is ripening.' },
+    { name: 'Eihwaz', symbol: '\u16C7', title: 'The Yew Tree', brian: 'The yew tree lives for a thousand years, kid. Deep roots, long life, standing tall when everything else falls.' },
+    { name: 'Perthro', symbol: '\u16C8', title: 'The Lot Cup', brian: 'The Spooky Do rune! The dice are rolling, love. And they\'re loaded in your favour \u2014 I checked the Ephemeris.' },
+    { name: 'Algiz', symbol: '\u16C9', title: 'Protection', brian: 'You\'re protected, kid. Whatever\'s been worrying you \u2014 there\'s something bigger looking out for you.' },
+    { name: 'Sowilo', symbol: '\u16CA', title: 'The Sun', brian: 'The sun\'s coming out for you, love. Not tomorrow, not next week \u2014 now. Lift your face up and feel it.' },
+    { name: 'Tiwaz', symbol: '\u16CF', title: 'Victory', brian: 'Stand your ground, kid. You\'re in the right. The stars know it even if nobody else does yet.' },
+    { name: 'Berkano', symbol: '\u16D2', title: 'The Birch', brian: 'New life, love. Something\'s being born \u2014 could be an idea, could be a brand new you. All beautiful.' },
+    { name: 'Ehwaz', symbol: '\u16D6', title: 'The Horse', brian: 'You and whoever you\'re working with \u2014 you\'re a team, love. Trust them. Same direction.' },
+    { name: 'Mannaz', symbol: '\u16D7', title: 'Humanity', brian: 'We\'re all in this together, kid. Every single one of us.' },
+    { name: 'Laguz', symbol: '\u16DA', title: 'Water', brian: 'Trust the current, love. Stop paddling for a minute and let the water take you where you need to go.' },
+    { name: 'Ingwaz', symbol: '\u16DC', title: 'Fertility', brian: 'Something wonderful is growing inside you, kid. You can\'t see it yet, but it\'s there. Give it time.' },
+    { name: 'Dagaz', symbol: '\u16DE', title: 'Dawn', brian: 'Dawn\'s coming, love. I don\'t care how dark it\'s been \u2014 the sun hasn\'t forgotten about you.' },
+    { name: 'Othala', symbol: '\u16DF', title: 'Home', brian: 'You belong here, kid. Right here. Wherever you\'re reading this \u2014 that\'s where you\'re meant to be.' }
+];
+
+// ==================== GEAR (Amazon affiliate) ====================
+const GEAR = [
+    { name: "Raphael's Ephemeris 2026", desc: 'Brian\'s book. The one he carried everywhere. Planetary tables since 1820.', search: 'Raphaels Ephemeris 2026', emoji: '\uD83D\uDCD6' },
+    { name: 'The Only Astrology Book You\'ll Ever Need', desc: 'Sun signs, moon signs, rising signs, compatibility \u2014 the lot. Over 500 pages.', search: 'The Only Astrology Book You\'ll Ever Need', emoji: '\u2728' },
+    { name: 'Rider-Waite-Smith Tarot Deck', desc: 'The original. The gold standard since 1909. Start here. Brian did.', search: 'Rider Waite Smith Tarot Deck', emoji: '\uD83C\uDCCF' },
+    { name: 'Crystal Healing Starter Set', desc: 'Amethyst, rose quartz, clear quartz, citrine \u2014 pick the one that calls to you.', search: 'Crystal Healing Starter Set', emoji: '\uD83D\uDC8E' },
+    { name: 'Elder Futhark Rune Set', desc: '24 runes carved in stone. The Spooky Do at its most ancient.', search: 'Elder Futhark Rune Set Stone', emoji: '\u16A0' },
+    { name: 'Zodiac Candle Set', desc: 'Twelve candles. Twelve signs. Twelve scents. Set the atmosphere, kid.', search: 'Zodiac Candle Set 12 Signs', emoji: '\uD83D\uDD6F\uFE0F' },
+    { name: 'Nag Champa Incense', desc: 'The classic. Smells like every spiritual shop you\'ve ever walked into.', search: 'Nag Champa Incense Satya', emoji: '\uD83C\uDF2C\uFE0F' },
+    { name: 'Selenite Wand', desc: 'The cleanser. The reset button. Brian ran one over his Ephemeris before every reading.', search: 'Selenite Wand Crystal', emoji: '\u2604\uFE0F' },
+    { name: 'Linda Goodman\'s Sun Signs', desc: 'The classic that started it all. Warm, witty, scarily accurate. Brian had a dog-eared copy.', search: 'Linda Goodman Sun Signs', emoji: '\u2B50' },
+    { name: 'Natural Amethyst Cluster', desc: 'The calming stone. The big beautiful purple one. Every practitioner has one.', search: 'Natural Amethyst Cluster', emoji: '\uD83D\uDC9C' }
+];
+
+// ==================== LOADING MESSAGES ====================
+const LOADING_MSGS = [
+    "Brian's looking it up in his Ephemeris...",
+    "The crystal ball needs a polish, hang on love...",
+    "Hold on love, the stars are buffering...",
+    "Brian's checking the planetary tables... he's thorough, this one...",
+    "The cards are shuffling themselves... they're fussy like that...",
+    "Just consulting the Spooky Do...",
+    "Brian's put the kettle on \u2014 won't be a minute, kid...",
+    "The stars are aligning... they're nearly there, love...",
+    "Brian says don't worry, everything works out in the end...",
+    "Hang on \u2014 Mercury's in retrograde and the Wi-Fi's wobbly...",
+    "The tea's brewing and so is your reading...",
+    "Brian's having a word with Saturn... Saturn's being difficult...",
+    "Loading your cosmic destiny... the universe doesn't have broadband, love...",
+    "The Spooky Do is warming up...",
+    "Brian's checking his Ephemeris for the third time \u2014 he's precise like that...",
+    "Venus is adjusting her lipstick... nearly ready, love...",
+    "Hold tight, kid \u2014 the fairground wheel's still turning...",
+    "Brian says you'll always have a fiver in your pocket \u2014 and a reading in a moment...",
+    "The tarot cards are having a meeting about your future...",
+    "Jupiter's running late again... big planet, slow mover...",
+    "Brian's just finishing a toasted tea cake... priorities, love...",
+    "The moon's checking your chart... she's very thorough...",
+    "Almost there \u2014 the Spooky Do doesn't rush, kid...",
+    "Brian's cameraman instinct says the lighting needs adjusting...",
+    "The runes are rolling... they like to take their time...",
+    "Your stars are being carefully hand-selected by Brian Carter himself...",
+    "The cosmos is doing the maths... carry the Saturn, divide by Neptune...",
+    "Brian says sit down, have a cuppa, it'll be with you in a sec...",
+    "The Ephemeris pages are turning themselves... that's a good sign, love...",
+    "Nearly there, kid \u2014 Brian believes in you, and so does the universe..."
+];
+
+// ==================== SEARCH (graceful) ====================
+var searchIndex = null;
+var searchInput = document.getElementById('villageSearch');
+var searchResults = document.getElementById('searchResults');
+
+fetch('search-index.json').then(function(r){return r.json()}).then(function(d){searchIndex=d}).catch(function(){});
+
+if (searchInput) {
+    searchInput.addEventListener('input', function() {
+        var q = this.value.trim().toLowerCase();
+        if (!q || q.length < 2 || !searchIndex) {
+            searchResults.style.display = 'none';
+            searchResults.innerHTML = '';
+            return;
+        }
+        var matches = searchIndex.filter(function(item) {
+            return item.name.toLowerCase().includes(q) ||
+                (item.description && item.description.toLowerCase().includes(q)) ||
+                (item.location && item.location.toLowerCase().includes(q)) ||
+                item.keywords.some(function(k){return k.includes(q)});
+        }).slice(0, 6);
+        if (!matches.length) {
+            searchResults.style.display = 'block';
+            searchResults.innerHTML = '<p style="color:var(--text-muted);padding:8px 0">No results found.</p>';
+            return;
+        }
+        searchResults.style.display = 'block';
+        searchResults.innerHTML = matches.map(function(m) {
+            var badge = m.type === 'hamlet' ? '<span style="background:rgba(212,165,116,0.15);color:var(--gold);padding:2px 8px;border-radius:6px;font-size:0.85rem;font-weight:600;margin-left:8px">Hamlet</span>' :
+                '<span style="background:rgba(124,58,237,0.15);color:var(--purple-light);padding:2px 8px;border-radius:6px;font-size:0.85rem;font-weight:600;margin-left:8px">Village</span>';
+            return '<a href="' + m.url + '" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;text-decoration:none;color:var(--text);background:rgba(255,255,255,0.02);margin-bottom:4px;border:1px solid var(--card-border);transition:border-color 0.15s" onmouseover="this.style.borderColor=\'var(--gold)\'" onmouseout="this.style.borderColor=\'var(--card-border)\'">' +
+                '<span style="font-size:1.8rem">' + m.emoji + '</span>' +
+                '<div><span style="font-weight:600">' + m.name + '</span>' + badge + '<br><span style="color:var(--text-muted);font-size:0.95rem">' + m.description + '</span></div></a>';
+        }).join('');
+    });
+}
+
+// ==================== WINDOW ONLOAD ====================
+window.onload = async function() {
+    checkAgeVerification();
+    initSectionReveal();
+    initSnapNav();
+    loadBrianChat();
+    loadBroadcast();
+    checkReferral();
+    buildZodiacGrid();
+    buildGearGrid();
+    createStars();
+
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            if (event === 'SIGNED_IN' && session) {
+                currentUser = session.user;
+                await loadUserData();
+                showUserStatus();
+                checkAdminStatus();
+                showAuthSuccess();
+            } else if (event === 'SIGNED_OUT') {
+                currentUser = null; isAdmin = false;
+                document.getElementById('userBar').classList.add('hidden');
+                document.getElementById('navAdmin').classList.add('hidden');
+            }
+        });
+        if (session) {
+            currentUser = session.user;
+            await loadUserData();
+            showUserStatus();
+            checkAdminStatus();
+        }
+        loadRecentActivity();
+    } catch (e) {
+        console.warn('Supabase init error (page still works):', e.message);
+        loadRecentActivity();
+    }
+};
+
+// ==================== AUTH SUCCESS ====================
+function showAuthSuccess() {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay'; modal.id = 'authSuccessModal';
+    modal.innerHTML = '<div class="modal-content text-center"><div class="text-6xl mb-4">&#128302;&#10024;</div><h2 class="text-2xl font-bold text-gray-800 mb-3">Welcome Home, Seeker</h2><p class="text-gray-600 mb-4">The stars were waiting for you. You\'re family now \u2014 the fire was already burning, we saved you a seat.</p><p class="text-purple-600 font-semibold mb-6">+10 Kudos for joining!</p><button onclick="document.getElementById(\'authSuccessModal\').remove()" class="btn btn-primary w-full">Let\'s Read the Stars!</button></div>';
+    document.body.appendChild(modal);
+}
+
+// ==================== NAVIGATION ====================
+function scrollToSection(selector) {
+    var el = document.querySelector(selector);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('sectionAdmin').classList.add('hidden');
+    document.querySelector('main').style.display = '';
+}
+
+function switchTab(group, tab, btn) {
+    document.querySelectorAll('[data-tab-group="' + group + '"]').forEach(function(p) { p.classList.remove('active'); });
+    btn.parentElement.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById(group + '-' + tab).classList.add('active');
+    btn.classList.add('active');
+}
+
+function initSnapNav() {
+    var pages = document.querySelectorAll('.snap-page');
+    var navPills = document.querySelectorAll('.nav-pill[data-section]');
+    var dots = document.querySelectorAll('.dot-nav-dot');
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+            if (e.isIntersecting && e.intersectionRatio >= 0.3) {
+                var id = e.target.id;
+                navPills.forEach(function(p) { p.classList.remove('active'); });
+                var matchPill = document.querySelector('.nav-pill[data-section="' + id + '"]');
+                if (matchPill) { matchPill.classList.add('active'); matchPill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' }); }
+                dots.forEach(function(d) { d.classList.remove('active'); });
+                var matchDot = document.querySelector('.dot-nav-dot[data-page="' + id + '"]');
+                if (matchDot) matchDot.classList.add('active');
+            }
+        });
+    }, { threshold: 0.3 });
+    pages.forEach(function(page) { observer.observe(page); });
+}
+
+function showAdmin() {
+    document.querySelector('main').style.display = 'none';
+    document.getElementById('sectionAdmin').classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
+function hideAdmin() {
+    document.getElementById('sectionAdmin').classList.add('hidden');
+    document.querySelector('main').style.display = '';
+}
+
+// ==================== SECTION REVEAL ====================
+function initSectionReveal() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.section-fade').forEach(el => observer.observe(el));
+}
+
+// ==================== AGE VERIFICATION ====================
+function checkAgeVerification() {
+    if (!localStorage.getItem('zodiacman_age')) document.getElementById('ageModal').classList.remove('hidden');
+}
+function confirmAge(type) {
+    localStorage.setItem('zodiacman_age', type);
+    document.getElementById('ageModal').classList.add('hidden');
+    if (type === 'under18') alert('Please ask a parent or guardian to join with you.');
+}
+
+// ==================== MODE SWITCHING ====================
+function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('modeIdentify').className = mode === 'identify' ? 'flex-1 btn btn-primary text-sm' : 'flex-1 btn btn-outline text-sm';
+    document.getElementById('modeRoast').className = mode === 'roast' ? 'flex-1 btn btn-primary text-sm' : 'flex-1 btn btn-outline text-sm';
+    document.getElementById('oracleTitle').textContent = mode === 'identify' ? "What's This Mystery?" : "Spooky Roast";
+    document.getElementById('oracleSubtitle').textContent = mode === 'identify' ? "Snap a photo. Brian will tell you what the universe thinks." : "Upload a photo for a playful spooky roast.";
+}
+
+// ==================== USER AUTH ====================
+async function loadUserData() {
+    if (!currentUser) return;
+    try {
+        let { data: userData } = await supabaseClient.from('users').select('*').eq('id', currentUser.id).single();
+        if (!userData) {
+            const { data: newUser } = await supabaseClient.from('users').insert([{ id: currentUser.id, email: currentUser.email, username: currentUser.email.split('@')[0], kudos: 0, oid_memberships: [CONFIG.oidSlug] }]).select().single();
+            userData = newUser;
+        }
+        if (userData) {
+            const oidCount = userData.oid_memberships?.length || 1;
+            let badge = 'Villager';
+            if (oidCount >= 5) badge = 'Pollinator';
+            else if (oidCount >= 2) badge = 'Bridge Walker';
+            document.getElementById('userName').textContent = '@' + userData.username;
+            document.getElementById('userBadge').textContent = badge;
+            document.getElementById('userKudos').textContent = userData.kudos || 0;
+            if (document.getElementById('adminUserName')) document.getElementById('adminUserName').textContent = '@' + userData.username;
+            if (document.getElementById('adminUserKudos')) document.getElementById('adminUserKudos').textContent = userData.kudos || 0;
+        }
+    } catch (e) { console.error('User error:', e); }
+}
+
+function showUserStatus() {
+    document.getElementById('userBar').classList.remove('hidden');
+    document.getElementById('quickNav').classList.remove('hidden');
+    document.getElementById('signInPrompt')?.classList.add('hidden');
+    document.getElementById('quickSignUp').style.display = 'none';
+}
+
+async function signUpOrIn(emailId, passwordId, formId, successId) {
+    const email = document.getElementById(emailId).value.trim();
+    const password = document.getElementById(passwordId).value;
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    if (!password || password.length < 6) { alert('Password must be at least 6 characters.'); return; }
+    const form = document.getElementById(formId);
+    const btn = form.querySelector('button');
+    const originalText = btn.textContent;
+    btn.textContent = 'Consulting the stars...'; btn.disabled = true;
+    try {
+        const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (!signInError && signInData.session) {
+            document.getElementById(formId).classList.add('hidden');
+            document.getElementById(successId).classList.remove('hidden');
+            currentUser = signInData.session.user;
+            await loadUserData(); showUserStatus(); return;
+        }
+        const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({ email, password });
+        if (signUpError) {
+            if (signUpError.message.includes('already registered')) alert('Account exists but password is wrong. Try again or contact Chris on WhatsApp.');
+            else alert('Error: ' + signUpError.message);
+            return;
+        }
+        if (signUpData.session) {
+            document.getElementById(formId).classList.add('hidden');
+            document.getElementById(successId).classList.remove('hidden');
+            currentUser = signUpData.session.user;
+            await loadUserData(); showUserStatus();
+        } else {
+            document.getElementById(formId).classList.add('hidden');
+            document.getElementById(successId).classList.remove('hidden');
+            document.getElementById(successId).innerHTML = '<p class="font-bold" style="color:#22c55e">Check your email!</p><p class="text-sm mt-1" style="color:var(--text-muted)">Click the link we sent to finish signing up.</p>';
+        }
+    } catch (e) { alert('Error: ' + (e.message || e)); }
+    finally { btn.textContent = originalText; btn.disabled = false; }
+}
+
+async function signOut() { await supabaseClient.auth.signOut(); currentUser = null; location.reload(); }
+
+// ==================== ADMIN ====================
+function checkAdminStatus() {
+    if (currentUser && CONFIG.adminEmails.includes(currentUser.email.toLowerCase())) {
+        isAdmin = true;
+        document.getElementById('navAdmin').classList.remove('hidden');
+        loadAdminData();
+    }
+}
+async function loadAdminData() { if (!isAdmin) return; generateAdminQR(); loadHighKudosUsers(); loadVillageStats(); loadAdminBio(); }
+
+function generateAdminQR() {
+    const c = document.getElementById('adminQRCode'); if (!c) return; c.innerHTML = '';
+    QRCode.toCanvas(window.location.origin + '?ref=chrisptee', { width: 280, margin: 2 }, (err, canvas) => { if (!err) c.appendChild(canvas); });
+}
+function downloadAdminQR() {
+    QRCode.toDataURL(window.location.origin + '?ref=chrisptee', { width: 1024, margin: 2 }, (err, url) => {
+        if (err) return; const a = document.createElement('a'); a.download = 'zodiacman-qr.png'; a.href = url; a.click();
+    });
+}
+async function loadHighKudosUsers() {
+    try {
+        const { data } = await supabaseClient.from('users').select('id, username, kudos, is_mayor').order('kudos', { ascending: false }).limit(10);
+        if (data?.length) {
+            document.getElementById('highKudosList').innerHTML = data.map(u => '<div class="flex items-center justify-between p-3 rounded-lg" style="background:rgba(255,255,255,0.05)"><div><span class="font-semibold">@' + u.username + '</span> <span style="color:var(--purple-light)" class="ml-2">' + (u.kudos||0) + ' Kudos</span>' + (u.is_mayor ? ' <span class="badge badge-founder ml-2">Mayor</span>' : '') + '</div>' + (!u.is_mayor ? '<button onclick="makeMayor(\'' + u.id + '\',\'' + u.username + '\')" class="btn btn-outline text-xs py-1 px-3">Make Mayor</button>' : '') + '</div>').join('');
+        } else { document.getElementById('highKudosList').innerHTML = '<p style="color:var(--text-muted)">No villagers yet</p>'; }
+    } catch (e) { console.error(e); }
+}
+async function makeMayor(userId, username) {
+    if (!confirm('Make @' + username + ' a Mayor?')) return;
+    try { await supabaseClient.from('users').update({ is_mayor: true }).eq('id', userId); alert('@' + username + ' is now a Mayor!'); loadHighKudosUsers(); } catch (e) { alert('Error: ' + e.message); }
+}
+async function giftProAccess() {
+    const email = document.getElementById('giftProEmail').value.trim();
+    if (!email || !email.includes('@')) { alert('Enter a valid email'); return; }
+    try {
+        const d = new Date(); d.setDate(d.getDate() + 30);
+        const { error } = await supabaseClient.from('users').update({ pro_until: d.toISOString() }).eq('email', email);
+        if (error) throw error;
+        alert('Pro gifted to ' + email); document.getElementById('giftProEmail').value = '';
+    } catch (e) { alert('Error: user may not exist yet.'); }
+}
+async function loadAdminBio() { document.getElementById('adminBio').value = localStorage.getItem('zodiacman_admin_bio') || ''; }
+function saveAdminBio() { localStorage.setItem('zodiacman_admin_bio', document.getElementById('adminBio').value); alert('Saved!'); }
+async function loadVillageStats() {
+    try {
+        const { count } = await supabaseClient.from('users').select('*', { count: 'exact', head: true });
+        const { data: kd } = await supabaseClient.from('users').select('kudos');
+        document.getElementById('statVillagers').textContent = count || 0;
+        document.getElementById('statKudos').textContent = kd?.reduce((s, u) => s + (u.kudos || 0), 0) || 0;
+    } catch (e) { console.error(e); }
+}
+
+// ==================== BROADCAST ====================
+function getYouTubeEmbedUrl(url) {
+    if (!url) return '';
+    let vid = '';
+    if (url.includes('youtube.com/shorts/')) vid = url.split('youtube.com/shorts/')[1].split('?')[0];
+    else if (url.includes('youtube.com/live/')) vid = url.split('youtube.com/live/')[1].split('?')[0];
+    else if (url.includes('youtu.be/')) vid = url.split('youtu.be/')[1].split('?')[0];
+    else if (url.includes('youtube.com/watch')) vid = new URLSearchParams(url.split('?')[1]).get('v');
+    else if (url.includes('youtube.com/embed/')) vid = url.split('youtube.com/embed/')[1].split('?')[0];
+    return vid ? 'https://www.youtube.com/embed/' + vid : url;
+}
+async function loadBroadcast() {
+    try {
+        const { data, error } = await supabaseClient.from('broadcast').select('*').eq('is_active', true).limit(1).single();
+        if (error || !data) return;
+        document.getElementById('broadcastVideo').src = getYouTubeEmbedUrl(data.video_url);
+        document.getElementById('broadcastTitle').textContent = data.title || 'Village Broadcast';
+        document.getElementById('broadcastSection').classList.remove('hidden');
+        if (data.is_emergency) document.getElementById('emergencyBanner').classList.remove('hidden');
+        if (isAdmin) {
+            document.getElementById('broadcastUrlInput').value = data.video_url || '';
+            document.getElementById('broadcastTitleInput').value = data.title || '';
+            document.getElementById('broadcastEmergency').checked = data.is_emergency || false;
+            document.getElementById('toggleBroadcastBtn').textContent = data.is_active ? 'Hide Broadcast' : 'Show Broadcast';
+        }
+    } catch (e) { console.log('Broadcast:', e.message); }
+}
+async function updateBroadcast() {
+    if (!isAdmin) return;
+    const url = document.getElementById('broadcastUrlInput').value.trim();
+    const title = document.getElementById('broadcastTitleInput').value.trim();
+    const isEmergency = document.getElementById('broadcastEmergency').checked;
+    if (!url) { alert('Enter a YouTube URL'); return; }
+    try {
+        const { error } = await supabaseClient.from('broadcast').update({ video_url: url, title: title || 'Village Broadcast', is_emergency: isEmergency, is_active: true, updated_at: new Date().toISOString(), updated_by: currentUser.email }).eq('id', (await supabaseClient.from('broadcast').select('id').limit(1).single()).data.id);
+        if (error) throw error;
+        alert('Broadcast updated!'); loadBroadcast();
+    } catch (e) { alert('Error: ' + e.message); }
+}
+async function toggleBroadcast() {
+    if (!isAdmin) return;
+    try {
+        const { data: c } = await supabaseClient.from('broadcast').select('is_active, id').limit(1).single();
+        const ns = !c.is_active;
+        await supabaseClient.from('broadcast').update({ is_active: ns, updated_at: new Date().toISOString() }).eq('id', c.id);
+        document.getElementById('toggleBroadcastBtn').textContent = ns ? 'Hide Broadcast' : 'Show Broadcast';
+        if (ns) loadBroadcast(); else document.getElementById('broadcastSection').classList.add('hidden');
+        alert(ns ? 'Broadcast visible' : 'Broadcast hidden');
+    } catch (e) { console.error(e); }
+}
+
+// ==================== ACTIVITY & REFERRAL ====================
+function checkReferral() {
+    const ref = new URLSearchParams(window.location.search).get('ref');
+    if (ref) { localStorage.setItem('referrer', ref); window.history.replaceState({}, '', window.location.pathname); }
+}
+async function loadRecentActivity() {
+    try {
+        const { data } = await supabaseClient.from('users').select('username, created_at').order('created_at', { ascending: false }).limit(5);
+        if (data?.length) {
+            document.getElementById('activityList').innerHTML = data.map(u => '<p>&#128302; <strong>@' + u.username + '</strong> joined</p>').join('');
+        } else { document.getElementById('activityList').innerHTML = '<p style="color:var(--text-muted)">Be the first to join!</p>'; }
+    } catch (e) { console.error(e); }
+}
+
+// ==================== Q&A ACCORDION ====================
+function toggleQA(el) {
+    const answer = el.nextElementSibling;
+    const arrow = el.querySelector('.qa-arrow');
+    const wasOpen = answer.classList.contains('open');
+    document.querySelectorAll('.qa-a').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.qa-arrow').forEach(a => a.classList.remove('open'));
+    if (!wasOpen) { answer.classList.add('open'); arrow.classList.add('open'); }
+}
+
+// ==================== BRIAN CHATBOT ====================
+let brianMessages = [];
+function loadBrianChat() {
+    const saved = localStorage.getItem('zodiacman_brian_chat');
+    if (saved) { try { brianMessages = JSON.parse(saved); renderBrianMessages(); } catch(e) {} }
+}
+function saveBrianChat() {
+    localStorage.setItem('zodiacman_brian_chat', JSON.stringify(brianMessages.slice(-50)));
+}
+function renderBrianMessages() {
+    const container = document.getElementById('brianMessages');
+    if (!brianMessages.length) {
+        container.innerHTML = '<div class="chat-msg brian">Hello love! I\'m Brian, your Zodiac Man. Ask me anything about the stars, tarot, runes, crystals, or life itself. The Spooky Do is open for business! \u2728</div>';
+        return;
+    }
+    container.innerHTML = brianMessages.map(m =>
+        '<div class="chat-msg ' + (m.role === 'user' ? 'user' : 'brian') + '">' + escapeHtml(m.text) + '</div>'
+    ).join('');
+    container.scrollTop = container.scrollHeight;
+}
+function showTyping() {
+    const container = document.getElementById('brianMessages');
+    container.insertAdjacentHTML('beforeend', '<div class="chat-msg brian" id="typingIndicator"><div class="typing-dots"><span></span><span></span><span></span></div></div>');
+    container.scrollTop = container.scrollHeight;
+}
+function removeTyping() { document.getElementById('typingIndicator')?.remove(); }
+
+async function sendBrianMessage() {
+    const input = document.getElementById('brianInput');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    brianMessages.push({ role: 'user', text });
+    renderBrianMessages();
+    showTyping();
+    try {
+        const res = await fetch('/.netlify/functions/chat-zodiacman', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: brianMessages })
+        });
+        const data = await res.json();
+        removeTyping();
+        const reply = data.reply || "Sorry love, I got a bit lost there. Ask me again?";
+        brianMessages.push({ role: 'model', text: reply });
+        renderBrianMessages();
+        saveBrianChat();
+    } catch (e) {
+        removeTyping();
+        brianMessages.push({ role: 'model', text: "Something went wrong \u2014 might be a dodgy connection. Give it another go." });
+        renderBrianMessages();
+    }
+}
+function clearBrianChat() {
+    brianMessages = [];
+    localStorage.removeItem('zodiacman_brian_chat');
+    renderBrianMessages();
+}
+function quickAsk(question) {
+    document.getElementById('brianInput').value = question;
+    sendBrianMessage();
+}
+
+// ==================== PATIENCE SYSTEM ====================
+const patientMessages = LOADING_MSGS;
+const patienceLevels = [
+    { min: 0, emoji: '&#128302;', title: 'Apprentice', bar: 5 },
+    { min: 5, emoji: '&#10024;', title: 'Keen', bar: 15 },
+    { min: 10, emoji: '&#128301;', title: 'Patient', bar: 30 },
+    { min: 15, emoji: '&#9203;', title: 'Composed', bar: 45 },
+    { min: 20, emoji: '&#128302;', title: 'Focused', bar: 60 },
+    { min: 25, emoji: '&#127775;', title: 'Wise', bar: 75 },
+    { min: 30, emoji: '&#128302;', title: 'Zen Master', bar: 90 },
+    { min: 40, emoji: '&#11088;', title: "Brian's Chosen", bar: 100 }
+];
+let messageIndex = 0, loadingStartTime = 0, loadingTimerInterval = null, patienceBonusAwarded = false;
+
+function updateLoadingMessage(customMsg) {
+    const el = document.getElementById('loadingStatus');
+    if (customMsg) el.textContent = customMsg;
+    else { el.textContent = patientMessages[messageIndex % patientMessages.length]; messageIndex++; }
+}
+function updatePatienceMetric(elapsed) {
+    let level = patienceLevels[0];
+    for (let i = patienceLevels.length - 1; i >= 0; i--) { if (elapsed >= patienceLevels[i].min) { level = patienceLevels[i]; break; } }
+    document.getElementById('patienceEmoji').innerHTML = level.emoji;
+    document.getElementById('patienceTitle').textContent = 'Patience Level: ' + level.title;
+    document.getElementById('patienceBar').style.width = level.bar + '%';
+    if (elapsed >= 20 && !patienceBonusAwarded) { patienceBonusAwarded = true; document.getElementById('patienceBonus').classList.remove('hidden'); }
+}
+function startLoadingTimer() {
+    loadingStartTime = Date.now(); messageIndex = 0; patienceBonusAwarded = false;
+    document.getElementById('patienceBonus')?.classList.add('hidden');
+    const timerEl = document.getElementById('loadingTimer');
+    loadingTimerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - loadingStartTime) / 1000);
+        timerEl.textContent = elapsed + 's';
+        if (elapsed > 0 && elapsed % 4 === 0) updateLoadingMessage();
+        updatePatienceMetric(elapsed);
+    }, 1000);
+}
+function stopLoadingTimer() { if (loadingTimerInterval) { clearInterval(loadingTimerInterval); loadingTimerInterval = null; } }
+function getPatienceBonus() {
+    if (!loadingStartTime) return 0;
+    const w = Math.floor((Date.now() - loadingStartTime) / 1000);
+    if (w >= 30) return 10; if (w >= 20) return 5; return 0;
+}
+
+// ==================== FETCH WITH RETRY ====================
+async function fetchWithRetry(url, options, maxRetries = 4) {
+    let lastError;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            const response = await fetch(url, options);
+            const data = await response.json();
+            if (data.error && (data.title === 'QRM Detected' || response.status === 429 || response.status === 503)) {
+                if (attempt < maxRetries) {
+                    const wait = Math.pow(2, attempt) * 3000;
+                    updateLoadingMessage('High demand... waiting ' + (wait/1000) + 's');
+                    await new Promise(r => setTimeout(r, wait));
+                    continue;
+                }
+            }
+            return data;
+        } catch (error) {
+            lastError = error;
+            if (error.name === 'AbortError') throw error;
+            if (attempt < maxRetries) {
+                const wait = Math.pow(2, attempt) * 3000;
+                updateLoadingMessage('Connection issue... trying again in ' + (wait/1000) + 's');
+                await new Promise(r => setTimeout(r, wait));
+            }
+        }
+    }
+    throw lastError;
+}
+
+// ==================== IMAGE HANDLING ====================
+async function compressImage(file, maxSize = 800, quality = 0.7) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let { width, height } = img;
+                if (width > maxSize || height > maxSize) {
+                    if (width > height) { height = (height / width) * maxSize; width = maxSize; }
+                    else { width = (width / height) * maxSize; height = maxSize; }
+                }
+                canvas.width = width; canvas.height = height;
+                canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                resolve({ base64: dataUrl.split(',')[1], dataUrl });
+            };
+            img.onerror = reject; img.src = e.target.result;
+        };
+        reader.onerror = reject; reader.readAsDataURL(file);
+    });
+}
+
+async function handleUpload(input) {
+    const file = input.files[0]; if (!file) return;
+    document.getElementById('oracleUpload').classList.add('hidden');
+    document.getElementById('loadingView').classList.remove('hidden');
+    document.getElementById('loadingStatus').textContent = 'Getting your photo ready...';
+    startLoadingTimer();
+    try {
+        const { base64, dataUrl } = await compressImage(file, 800, 0.7);
+        updateLoadingMessage('Brian\'s consulting his Ephemeris...');
+        const data = await fetchWithRetry('/.netlify/functions/analyze-image', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: base64, mode: currentMode, oidType: CONFIG.oidSlug, userId: currentUser?.id })
+        }, 4);
+        if (data.error) { stopLoadingTimer(); alert(data.description || 'Analysis failed.'); resetToHome(); return; }
+        currentResult = { mode: currentMode, image: dataUrl, ...data };
+        showResult(currentResult);
+        if (currentUser) {
+            const bonus = getPatienceBonus();
+            const total = 10 + bonus;
+            await supabaseClient.rpc('increment_kudos', { user_id: currentUser.id, amount: total });
+            const ke = document.getElementById('kudosEarned'); ke.classList.remove('hidden');
+            ke.innerHTML = bonus > 0 ? '<p class="text-xl font-bold" style="color:var(--gold)">+' + total + ' Kudos Earned!</p><p class="text-sm" style="color:var(--purple-light)">Includes +' + bonus + ' patience bonus</p>' : '<p class="text-xl font-bold" style="color:var(--gold)">+10 Kudos Earned!</p>';
+            document.getElementById('signInPrompt').classList.add('hidden');
+            await loadUserData();
+        }
+    } catch (error) {
+        console.error('Upload error:', error); stopLoadingTimer();
+        alert(error.name === 'AbortError' ? 'It took too long. Try again.' : 'Error analyzing. Try again.');
+        resetToHome();
+    }
+    input.value = '';
+}
+
+function showResult(result) {
+    stopLoadingTimer();
+    document.getElementById('loadingView').classList.add('hidden');
+    document.getElementById('resultView').classList.remove('hidden');
+    document.getElementById('resultImage').src = result.image;
+    document.getElementById('resultTitle').textContent = result.title || 'Result';
+    let description = result.description || '';
+    let amazonHtml = '';
+    const m = description.match(/AMAZON_SEARCH:\s*(.+?)(\n|$)/i);
+    if (m) {
+        const term = m[1].trim();
+        amazonHtml = '<a href="https://www.amazon.co.uk/s?k=' + encodeURIComponent(term) + '&tag=chrisptee-21" target="_blank" rel="noopener" class="block mt-4 p-3 rounded-lg text-center" style="background:rgba(255,255,255,0.15)">Looking for similar? Search "' + term + '" on Amazon</a>';
+        description = description.replace(/AMAZON_SEARCH:\s*.+?(\n|$)/i, '');
+    }
+    document.getElementById('resultDescription').innerHTML = description.replace(/\n/g, '<br>') + amazonHtml;
+}
+
+function resetToHome() {
+    document.getElementById('resultView').classList.add('hidden');
+    document.getElementById('loadingView').classList.add('hidden');
+    document.getElementById('oracleUpload').classList.remove('hidden');
+    document.getElementById('kudosEarned')?.classList.add('hidden');
+    currentResult = null;
+}
+
+// ==================== ZODIAC FUNCTIONS ====================
+function getZodiacSign(month, day) {
+    for (var i = 0; i < ZODIAC.length; i++) {
+        var z = ZODIAC[i];
+        if (z.startMonth > z.endMonth) {
+            // Wraps year (Capricorn: Dec 22 - Jan 19)
+            if ((month === z.startMonth && day >= z.startDay) || (month === z.endMonth && day <= z.endDay)) return z;
+        } else {
+            if ((month === z.startMonth && day >= z.startDay) || (month === z.endMonth && day <= z.endDay) || (month > z.startMonth && month < z.endMonth)) return z;
+        }
+    }
+    return ZODIAC[0]; // fallback
+}
+
+function calcLifePath(dateStr) {
+    var digits = dateStr.replace(/\D/g, '');
+    var sum = 0;
+    for (var i = 0; i < digits.length; i++) sum += parseInt(digits[i]);
+    while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+        var newSum = 0;
+        var s = sum.toString();
+        for (var j = 0; j < s.length; j++) newSum += parseInt(s[j]);
+        sum = newSum;
+    }
+    return LIFE_PATHS[sum] || LIFE_PATHS[sum % 9 || 9];
+}
+
+function getMoonPhaseInfo() {
+    try {
+        var phase = Astronomy.MoonPhase(new Date());
+        var name, emoji, desc;
+        if (phase < 22.5) { name = 'New Moon'; emoji = '\uD83C\uDF11'; desc = 'Time for new beginnings, love. Plant your seeds.'; }
+        else if (phase < 67.5) { name = 'Waxing Crescent'; emoji = '\uD83C\uDF12'; desc = 'Growing, building, gaining momentum. Keep going, kid.'; }
+        else if (phase < 112.5) { name = 'First Quarter'; emoji = '\uD83C\uDF13'; desc = 'Decision time. Take action on what you started.'; }
+        else if (phase < 157.5) { name = 'Waxing Gibbous'; emoji = '\uD83C\uDF14'; desc = 'Almost there. Refine, adjust, prepare for fullness.'; }
+        else if (phase < 202.5) { name = 'Full Moon'; emoji = '\uD83C\uDF15'; desc = 'Illumination! Everything comes to light. Celebrate, love.'; }
+        else if (phase < 247.5) { name = 'Waning Gibbous'; emoji = '\uD83C\uDF16'; desc = 'Time to share what you\'ve learned. Gratitude phase.'; }
+        else if (phase < 292.5) { name = 'Last Quarter'; emoji = '\uD83C\uDF17'; desc = 'Release what no longer serves you. Let it go, kid.'; }
+        else { name = 'Waning Crescent'; emoji = '\uD83C\uDF18'; desc = 'Rest and reflect. The cycle is completing.'; }
+        return { name: name, emoji: emoji, desc: desc, degrees: Math.round(phase) };
+    } catch (e) {
+        return { name: 'Moon', emoji: '\uD83C\uDF15', desc: 'The moon is always watching over you, love.', degrees: 0 };
+    }
+}
+
+function isMercuryRetrograde() {
+    try {
+        var now = new Date();
+        var elongation = Astronomy.Elongation('Mercury', now);
+        // Check if Mercury's elongation is shrinking (approximate retrograde detection)
+        var future = new Date(now.getTime() + 86400000); // 1 day ahead
+        var elongFuture = Astronomy.Elongation('Mercury', future);
+        var isRetro = elongFuture.elongation < elongation.elongation - 0.5;
+        return { retrograde: isRetro };
+    } catch (e) {
+        return { retrograde: false };
+    }
+}
+
+async function readMyStars() {
+    var dateInput = document.getElementById('birthdayInput').value;
+    if (!dateInput) { alert('Pop your birthday in, love!'); return; }
+    var parts = dateInput.split('-');
+    var year = parseInt(parts[0]), month = parseInt(parts[1]), day = parseInt(parts[2]);
+    var sign = getZodiacSign(month, day);
+    var lifePath = calcLifePath(dateInput);
+    var moon = getMoonPhaseInfo();
+    var mercury = isMercuryRetrograde();
+
+    // Show results container
+    document.getElementById('readingResults').style.display = 'block';
+
+    // Zodiac result
+    document.getElementById('zodiacResult').innerHTML =
+        '<div style="text-align:center"><span style="font-size:64px">' + sign.symbol + '</span></div>' +
+        '<h3 style="text-align:center;font-size:24px;margin:8px 0">' + sign.sign + '</h3>' +
+        '<p style="text-align:center;color:var(--text-muted);margin-bottom:12px">' + sign.dates + ' \u2022 ' + sign.element + ' \u2022 ' + sign.ruling + '</p>' +
+        '<p style="font-style:italic;color:var(--gold);font-size:1.1rem;line-height:1.7;text-align:center">"' + sign.brian + '"</p>' +
+        '<div style="display:flex;justify-content:center;gap:16px;margin-top:12px;flex-wrap:wrap">' +
+        '<span style="background:rgba(124,58,237,0.15);padding:6px 14px;border-radius:8px;font-size:14px">Lucky: ' + sign.lucky + '</span>' +
+        '<span style="background:rgba(124,58,237,0.15);padding:6px 14px;border-radius:8px;font-size:14px">' + sign.colour + '</span>' +
+        '<span style="background:rgba(124,58,237,0.15);padding:6px 14px;border-radius:8px;font-size:14px">' + sign.day + '</span></div>';
+
+    // Horoscope (from serverless function)
+    document.getElementById('horoscopeResult').innerHTML = '<div class="text-center"><div class="spinner"></div><p style="color:var(--text-muted)">Brian\'s reading your stars...</p></div>';
+    try {
+        var res = await fetch('/.netlify/functions/horoscope', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sign: sign.sign.toLowerCase(), birthday: dateInput })
+        });
+        var data = await res.json();
+        document.getElementById('horoscopeResult').innerHTML =
+            '<h3 style="font-size:20px;margin-bottom:8px">\u2728 Your Horoscope</h3>' +
+            '<p style="line-height:1.8;font-size:1.05rem">' + (data.horoscope || data.reading || 'The stars are being shy today, love. Try again in a moment.') + '</p>';
+    } catch (e) {
+        document.getElementById('horoscopeResult').innerHTML =
+            '<h3 style="font-size:20px;margin-bottom:8px">\u2728 Your Horoscope</h3>' +
+            '<p style="color:var(--text-muted)">The cosmic connection is a bit wobbly right now, love. Try again in a moment.</p>';
+    }
+
+    // Numerology
+    document.getElementById('numerologyResult').innerHTML =
+        '<h3 style="font-size:20px;margin-bottom:8px">\uD83D\uDD22 Life Path: ' + lifePath.title + '</h3>' +
+        '<p style="line-height:1.8;font-size:1.05rem">' + lifePath.meaning + '</p>';
+
+    // Moon phase
+    document.getElementById('moonResult').innerHTML =
+        '<h3 style="font-size:20px;margin-bottom:8px">' + moon.emoji + ' Moon: ' + moon.name + '</h3>' +
+        '<p style="line-height:1.8;font-size:1.05rem">' + moon.desc + '</p>' +
+        '<p style="color:var(--text-muted);font-size:14px;margin-top:8px">Phase: ' + moon.degrees + '\u00B0</p>';
+
+    // Mercury retrograde
+    document.getElementById('mercuryResult').innerHTML =
+        '<h3 style="font-size:20px;margin-bottom:8px">' + (mercury.retrograde ? '\u26A0\uFE0F' : '\u2705') + ' Mercury Retrograde</h3>' +
+        '<p style="line-height:1.8;font-size:1.05rem">' +
+        (mercury.retrograde ?
+            'Mercury IS in retrograde right now, love. Double-check your emails, re-read things before you send them, and don\'t sign anything important. Brian\'s advice: "If I\'m wrong, no harm done. If I\'m right, you just saved yourself a headache."' :
+            'Mercury is moving forward nicely, love. Communications are clear, travel plans are solid, and technology should behave itself. Good time to sign things, send important messages, and make decisions. The planets are on your side, kid.') +
+        '</p>';
+
+    // Scroll to results
+    document.getElementById('readingResults').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ==================== TAROT ====================
+function drawTarot() {
+    // Shuffle and pick 3
+    var shuffled = TAROT.slice().sort(function() { return Math.random() - 0.5; });
+    drawnTarot = shuffled.slice(0, 3);
+    // Reset cards
+    for (var i = 0; i < 3; i++) {
+        document.getElementById('tarot' + i).classList.remove('flipped');
+        document.getElementById('tarotFace' + i).innerHTML = '';
+    }
+    // Set face content
+    for (var j = 0; j < 3; j++) {
+        var card = drawnTarot[j];
+        var label = j === 0 ? 'Past' : j === 1 ? 'Present' : 'Future';
+        document.getElementById('tarotFace' + j).innerHTML =
+            '<h4>' + card.name + '</h4>' +
+            '<p style="font-size:11px;color:var(--purple);margin-bottom:4px">' + label + '</p>' +
+            '<p style="font-size:11px;line-height:1.4">' + card.meaning.substring(0, 120) + '...</p>';
+    }
+}
+
+function flipTarot(index) {
+    if (!drawnTarot.length) { drawTarot(); return; }
+    document.getElementById('tarot' + index).classList.toggle('flipped');
+}
+
+// ==================== CRYSTAL BALL ====================
+function askCrystalBall() {
+    var msg = CRYSTAL_MSGS[Math.floor(Math.random() * CRYSTAL_MSGS.length)];
+    var el = document.getElementById('crystalMsg');
+    el.style.opacity = 0;
+    el.style.transition = 'opacity 0.5s';
+    setTimeout(function() {
+        el.textContent = '"' + msg + '"';
+        el.style.color = 'var(--gold)';
+        el.style.opacity = 1;
+    }, 300);
+    // Pulse the crystal ball
+    var ball = document.getElementById('crystalBall');
+    ball.style.transform = 'scale(1.1)';
+    setTimeout(function() { ball.style.transform = 'scale(1)'; }, 500);
+}
+
+// ==================== DAILY RUNE ====================
+function drawDailyRune() {
+    var rune = RUNES[Math.floor(Math.random() * RUNES.length)];
+    document.getElementById('runeResult').innerHTML =
+        '<div class="rune-symbol" style="margin-bottom:12px">' + rune.symbol + '</div>' +
+        '<h4 style="font-size:22px;color:var(--gold);margin-bottom:4px">' + rune.name + ' \u2014 ' + rune.title + '</h4>' +
+        '<p style="font-style:italic;font-size:1.1rem;line-height:1.7;color:var(--gold);margin-top:12px">"' + rune.brian + '"</p>';
+}
+
+// ==================== BUILD ZODIAC GRID ====================
+function buildZodiacGrid() {
+    var grid = document.getElementById('zodiacGrid');
+    if (!grid) return;
+    grid.innerHTML = ZODIAC.map(function(z) {
+        return '<div class="zodiac-card">' +
+            '<div style="font-size:40px;margin-bottom:8px">' + z.symbol + '</div>' +
+            '<h4 style="font-size:18px;margin-bottom:4px">' + z.sign + '</h4>' +
+            '<p style="font-size:14px;color:var(--text-muted)">' + z.dates + '</p>' +
+            '<p style="font-size:13px;color:var(--text-muted);margin-top:4px">' + z.element + ' \u2022 ' + z.ruling + '</p>' +
+            '</div>';
+    }).join('');
+}
+
+// ==================== BUILD GEAR GRID ====================
+function buildGearGrid() {
+    var grid = document.getElementById('gearGrid');
+    if (!grid) return;
+    grid.innerHTML = GEAR.map(function(g) {
+        return '<a href="https://www.amazon.co.uk/s?k=' + encodeURIComponent(g.search) + '&tag=chrisptee-21" target="_blank" rel="noopener" class="gear-card">' +
+            '<span style="font-size:32px;flex-shrink:0">' + g.emoji + '</span>' +
+            '<div><p class="font-bold" style="font-size:15px;margin-bottom:2px">' + g.name + '</p>' +
+            '<p style="font-size:14px;color:var(--text-muted);line-height:1.5">' + g.desc + '</p></div></a>';
+    }).join('');
+}
+
+// ==================== CREATE HEADER STARS ====================
+function createStars() {
+    var container = document.getElementById('stars');
+    if (!container) return;
+    for (var i = 0; i < 50; i++) {
+        var star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        star.style.width = (Math.random() * 2 + 1) + 'px';
+        star.style.height = star.style.width;
+        container.appendChild(star);
+    }
+}
+
+// ==================== SOCIAL CARD ====================
+function buildSocialCard(callback) {
+    if (!currentResult) return;
+    var canvas = document.getElementById('resultCanvas');
+    var ctx = canvas.getContext('2d');
+    canvas.width = 1080; canvas.height = 1350;
+    var isRoast = currentResult.mode === 'roast';
+    var accent = isRoast ? '#ff6d00' : '#d4a574';
+    // Background gradient
+    var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    if (isRoast) { gradient.addColorStop(0, '#1a0a00'); gradient.addColorStop(0.5, '#3d0c02'); gradient.addColorStop(1, '#1a0a00'); }
+    else { gradient.addColorStop(0, '#0f0a2e'); gradient.addColorStop(0.5, '#1a1a4e'); gradient.addColorStop(1, '#0f0a2e'); }
+    ctx.fillStyle = gradient; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Top banner
+    ctx.fillStyle = accent; ctx.fillRect(0, 0, canvas.width, 70);
+    ctx.fillStyle = '#0f0a2e'; ctx.textAlign = 'center';
+    ctx.font = 'bold 30px sans-serif';
+    ctx.fillText(isRoast ? 'SPOOKY ROASTED BY ZODIAC MAN' : 'IDENTIFIED BY ZODIAC MAN', canvas.width / 2, 47);
+    var img = new Image();
+    img.onload = function() {
+        var scale = Math.min(900 / img.width, 520 / img.height);
+        var w = img.width * scale, h = img.height * scale;
+        var x = (canvas.width - w) / 2, y = 100;
+        ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 30;
+        ctx.drawImage(img, x, y, w, h); ctx.shadowBlur = 0;
+        var itemName = currentResult.title || 'Zodiac Man';
+        ctx.fillStyle = accent; ctx.textAlign = 'center';
+        ctx.font = 'bold 52px sans-serif';
+        var titleY = y + h + 65;
+        wrapText(ctx, itemName, canvas.width / 2, titleY, 950, 58);
+        var desc = (currentResult.description || '').replace(/AMAZON_SEARCH:.+/i, '').trim().substring(0, 350);
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.font = '26px sans-serif';
+        wrapText(ctx, desc, canvas.width / 2, titleY + 70, 950, 34);
+        // Footer bar
+        ctx.fillStyle = accent; ctx.fillRect(0, canvas.height - 90, canvas.width, 90);
+        ctx.fillStyle = '#0f0a2e';
+        ctx.font = 'bold 38px sans-serif';
+        ctx.fillText('zodiacman.netlify.app', canvas.width / 2, canvas.height - 50);
+        ctx.font = '22px sans-serif';
+        ctx.fillText(isRoast ? 'Free AI Spooky Roasts' : 'Free AI Mystical Identification', canvas.width / 2, canvas.height - 20);
+        callback(canvas);
+    };
+    img.src = currentResult.image;
+}
+
+async function downloadResult() {
+    buildSocialCard(function(canvas) {
+        var a = document.createElement('a'); a.download = 'zodiacman-result.png'; a.href = canvas.toDataURL('image/png'); a.click();
+    });
+}
+
+async function shareResult() {
+    var isRoast = currentResult && currentResult.mode === 'roast';
+    var shareText = isRoast ? 'Brian gave me a spooky roast! zodiacman.netlify.app' : 'Look what Zodiac Man identified! zodiacman.netlify.app';
+    buildSocialCard(async function(canvas) {
+        if (navigator.share && navigator.canShare) {
+            try {
+                var blob = await new Promise(function(r) { canvas.toBlob(r, 'image/png'); });
+                var file = new File([blob], 'zodiacman-result.png', { type: 'image/png' });
+                if (navigator.canShare({ files: [file] })) { await navigator.share({ title: currentResult.title || 'Zodiac Man', text: shareText, files: [file] }); return; }
+            } catch (e) { if (e.name !== 'AbortError') console.log('Share failed:', e); }
+        }
+        try { await navigator.clipboard.writeText(shareText); alert('Link copied! Share it everywhere.'); }
+        catch (e) { alert('Share: zodiacman.netlify.app'); }
+    });
+}
+
+function sellWithSpicyLister() {
+    if (!currentResult) return;
+    var desc = currentResult.description || '';
+    var oracleData = { source: 'oracle', title: currentResult.title || '' };
+    var nameMatch = desc.match(/IDENTIFIED:\s*(.+?)[\n\r]/i);
+    if (nameMatch) oracleData.itemName = nameMatch[1].trim();
+    var priceMatch = desc.match(/Price Range:\s*(.+?)[\n\r]/i);
+    if (priceMatch) oracleData.priceRange = priceMatch[1].trim();
+    var condMatch = desc.match(/Condition:\s*(.+?)[\n\r]/i);
+    if (condMatch) oracleData.condition = condMatch[1].trim();
+    oracleData.description = desc.replace(/AMAZON_SEARCH:\s*.+?(\n|$)/i, '').trim();
+    var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(oracleData))));
+    var url = 'https://www.spicylister.com/#oracle=' + encoded;
+    var clipText = '--- Zodiac Man Identification ---\n';
+    if (oracleData.itemName) clipText += 'Item: ' + oracleData.itemName + '\n';
+    if (oracleData.priceRange) clipText += 'Value: ' + oracleData.priceRange + '\n';
+    clipText += '\n' + oracleData.description;
+    navigator.clipboard.writeText(clipText).then(function() {
+        var toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--midnight);padding:16px 28px;border-radius:16px;font-weight:700;font-size:18px;z-index:9999;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.4);max-width:90vw;';
+        toast.innerHTML = 'Sending to SpicyLister...<br><span style="font-weight:400;font-size:16px">Oracle data will auto-import</span>';
+        document.body.appendChild(toast);
+        setTimeout(function() { toast.remove(); }, 3000);
+        window.open(url, '_blank');
+    }).catch(function() { window.open(url, '_blank'); });
+}
+
+// ==================== FORGOT PASSWORD ====================
+function openForgotPassword() {
+    document.getElementById('forgotPasswordModal').style.display = 'flex';
+}
+function closeForgotPassword() {
+    document.getElementById('forgotPasswordModal').style.display = 'none';
+    document.getElementById('forgotMsg').style.display = 'none';
+}
+async function sendForgotPassword() {
+    var email = document.getElementById('forgotEmail').value.trim();
+    if (!email) { showForgotMsg('Enter your email'); return; }
+    try {
+        var { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: 'https://zodiacman.netlify.app'
+        });
+        if (error) throw error;
+        showForgotMsg('Check your email! Reset link sent.');
+    } catch(e) { showForgotMsg('Error: ' + e.message); }
+}
+function showForgotMsg(msg) {
+    var el = document.getElementById('forgotMsg');
+    el.textContent = msg;
+    el.style.display = 'block';
+}
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeForgotPassword();
+});
+
+// ==================== CHANGE PASSWORD ====================
+async function godChangePassword() {
+    var pw = document.getElementById('godNewPassword').value;
+    var conf = document.getElementById('godConfirmPassword').value;
+    var msg = document.getElementById('godPasswordMsg');
+    if (!pw || pw.length < 6) { msg.textContent = 'At least 6 characters'; msg.style.display = 'block'; return; }
+    if (pw !== conf) { msg.textContent = 'Passwords don\'t match'; msg.style.display = 'block'; return; }
+    try {
+        var { error } = await supabaseClient.auth.updateUser({ password: pw });
+        if (error) throw error;
+        msg.textContent = 'Password updated!'; msg.style.display = 'block';
+        document.getElementById('godNewPassword').value = '';
+        document.getElementById('godConfirmPassword').value = '';
+        setTimeout(function() { msg.style.display = 'none'; }, 3000);
+    } catch(e) { msg.textContent = 'Error: ' + e.message; msg.style.display = 'block'; }
+}
+
+// ==================== UTILITIES ====================
+function escapeHtml(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    var words = text.split(' '); var line = '';
+    for (var i = 0; i < words.length; i++) {
+        var test = line + words[i] + ' ';
+        if (ctx.measureText(test).width > maxWidth && line) { ctx.fillText(line.trim(), x, y); line = words[i] + ' '; y += lineHeight; }
+        else { line = test; }
+    }
+    ctx.fillText(line.trim(), x, y);
+}
+</script>
+
+<!-- Forgot Password Modal -->
+<div id="forgotPasswordModal" style="display:none;position:fixed;inset:0;background:rgba(15,10,46,0.95);z-index:9999;align-items:center;justify-content:center;padding:1rem">
+    <div style="max-width:400px;width:100%;background:linear-gradient(135deg,rgba(26,26,78,0.95),rgba(15,10,46,0.98));border:1px solid var(--card-border);border-radius:16px;padding:2rem">
+        <h3 class="font-hand" style="font-size:1.6rem;color:var(--gold);text-align:center;margin-bottom:0.8rem">Reset Your Password</h3>
+        <p style="color:var(--text-muted);font-size:0.9rem;text-align:center;margin-bottom:1rem">Enter your email. We'll send a magic link.</p>
+        <input type="email" id="forgotEmail" placeholder="Your email" style="width:100%;padding:0.8rem 1rem;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);border-radius:10px;color:var(--text);font-size:1rem;margin-bottom:1rem">
+        <button onclick="sendForgotPassword()" class="btn btn-gold w-full" style="margin-bottom:0.5rem">Send Reset Link</button>
+        <button onclick="closeForgotPassword()" class="btn btn-outline w-full">Cancel</button>
+        <p id="forgotMsg" style="color:var(--gold);font-size:0.85rem;text-align:center;margin-top:0.8rem;display:none"></p>
+    </div>
+</div>
+
+</body>
+</html>

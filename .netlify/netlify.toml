@@ -1,0 +1,38 @@
+functionsDirectory = "C:\\Users\\comed\\Desktop\\a1\\APPS\\zodiacman-FINAL\\zodiacman\\netlify\\functions"
+functionsDirectoryOrigin = "config-v1"
+headersOrigin = "config"
+plugins = []
+redirects = []
+
+[build]
+publish = "C:\\Users\\comed\\Desktop\\a1\\APPS\\zodiacman-FINAL\\zodiacman"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "echo 'No build needed'"
+functions = "C:\\Users\\comed\\Desktop\\a1\\APPS\\zodiacman-FINAL\\zodiacman\\netlify\\functions"
+
+[build.environment]
+SECRETS_SCAN_OMIT_KEYS = "SUPABASE_API_KEY"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[functions]
+
+[functions."*"]
+
+[[headers]]
+for = "/*"
+
+[headers.values]
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
