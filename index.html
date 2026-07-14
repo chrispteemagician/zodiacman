@@ -176,20 +176,6 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 </head>
 <body>
 
-<!-- Age Verification Modal -->
-<div id="ageModal" class="modal-overlay hidden">
-    <div class="modal-content text-center">
-        <h2 class="text-2xl font-bold mb-3" style="color:var(--midnight)">Welcome, Seeker</h2>
-        <p class="text-gray-600 mb-6">Zodiac Man is a mystical village for everyone who seeks the stars. All ages, all paths, all welcome. We just need to know who you are so we can look after you properly.</p>
-        <div class="space-y-3">
-            <button onclick="confirmAge('adult')" class="w-full btn btn-green">I'm 18+ (Enter the Circle)</button>
-            <button onclick="confirmAge('parent')" class="w-full btn" style="background:#3b82f6;color:white">I'm a Parent/Guardian</button>
-            <button onclick="confirmAge('under18')" class="w-full btn btn-primary">I'm Under 18</button>
-        </div>
-        <p class="text-xs text-gray-500 mt-6">Every soul welcome. Be kind. That's the code.</p>
-    </div>
-</div>
-
 <!-- Header -->
 <header class="village-header" id="headerWrap">
     <div id="stars"></div>
@@ -561,7 +547,7 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
             <a href="https://fish-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128031;</span><span class="block text-sm font-semibold mt-1">Fish-Oid</span></a>
             <a href="https://designer-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128087;</span><span class="block text-sm font-semibold mt-1">Designer-Oid</span></a>
             <a href="https://watch-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#8986;</span><span class="block text-sm font-semibold mt-1">Watch-Oid</span></a>
-            <a href="https://miniature-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128269;</span><span class="block text-sm font-semibold mt-1">Miniature-Oid</span></a>
+            <a href="https://miniature-oid.netlify.app" class="village-link text-center py-3"><span class="text-2xl">&#128269;</span><span class="block text-sm font-semibold mt-1">Miniature-Oid</span></a>
         </div>
     </div>
 
@@ -1096,7 +1082,6 @@ if (searchInput) {
 
 // ==================== WINDOW ONLOAD ====================
 window.onload = async function() {
-    checkAgeVerification();
     initSectionReveal();
     initSnapNav();
     loadBrianChat();
@@ -1195,15 +1180,6 @@ function initSectionReveal() {
     document.querySelectorAll('.section-fade').forEach(el => observer.observe(el));
 }
 
-// ==================== AGE VERIFICATION ====================
-function checkAgeVerification() {
-    if (!localStorage.getItem('zodiacman_age')) document.getElementById('ageModal').classList.remove('hidden');
-}
-function confirmAge(type) {
-    localStorage.setItem('zodiacman_age', type);
-    document.getElementById('ageModal').classList.add('hidden');
-    if (type === 'under18') alert('Please ask a parent or guardian to join with you.');
-}
 
 // ==================== MODE SWITCHING ====================
 function setMode(mode) {
