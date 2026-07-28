@@ -1282,7 +1282,8 @@ async function loadHighKudosUsers() {
     try {
         const { data } = await supabaseClient.from('users').select('id, username, kudos, is_mayor').order('kudos', { ascending: false }).limit(10);
         if (data?.length) {
-            document.getElementById('highKudosList').innerHTML = data.map(u => '<div class="flex items-center justify-between p-3 rounded-lg" style="background:rgba(255,255,255,0.05)"><div><span class="font-semibold">@' + u.username + '</span> <span style="color:var(--purple-light)" class="ml-2">' + (u.kudos||0) + ' Kudos</span>' + (u.is_mayor ? ' <span class="badge badge-founder ml-2">Mayor</span>' : '') + '</div>' + (!u.is_mayor ? '<button onclick="makeMayor(\'' + u.id + '\',\'' + u.username + '\')" class="btn btn-outline text-xs py-1 px-3">Make Mayor</button>' : '') + '</div>').join('');
+            // username originates from user-controlled email local-part (see signup) — escape before innerHTML on admin page to prevent stored XSS / session-token theft
+            document.getElementById('highKudosList').innerHTML = data.map(u => '<div class="flex items-center justify-between p-3 rounded-lg" style="background:rgba(255,255,255,0.05)"><div><span class="font-semibold">@' + escapeHtml(u.username) + '</span> <span style="color:var(--purple-light)" class="ml-2">' + (u.kudos||0) + ' Kudos</span>' + (u.is_mayor ? ' <span class="badge badge-founder ml-2">Mayor</span>' : '') + '</div>' + (!u.is_mayor ? '<button onclick="makeMayor(\'' + u.id + '\',\'' + escapeHtml(u.username).replace(/'/g, "\\'") + '\')" class="btn btn-outline text-xs py-1 px-3">Make Mayor</button>' : '') + '</div>').join('');
         } else { document.getElementById('highKudosList').innerHTML = '<p style="color:var(--text-muted)">No villagers yet</p>'; }
     } catch (e) { console.error(e); }
 }
@@ -1371,7 +1372,8 @@ async function loadRecentActivity() {
     try {
         const { data } = await supabaseClient.from('users').select('username, created_at').order('created_at', { ascending: false }).limit(5);
         if (data?.length) {
-            document.getElementById('activityList').innerHTML = data.map(u => '<p>&#128302; <strong>@' + u.username + '</strong> joined</p>').join('');
+            // username originates from user-controlled email local-part (see signup) — escape before innerHTML on this public page to prevent stored XSS
+            document.getElementById('activityList').innerHTML = data.map(u => '<p>&#128302; <strong>@' + escapeHtml(u.username) + '</strong> joined</p>').join('');
         } else { document.getElementById('activityList').innerHTML = '<p style="color:var(--text-muted)">Be the first to join!</p>'; }
     } catch (e) { console.error(e); }
 }
@@ -1594,7 +1596,8 @@ function showResult(result) {
         amazonHtml = '<a href="https://www.amazon.co.uk/s?k=' + encodeURIComponent(term) + '&tag=chrisptee-21" target="_blank" rel="noopener" class="block mt-4 p-3 rounded-lg text-center" style="background:rgba(255,255,255,0.15)">Looking for similar? Search "' + term + '" on Amazon</a>';
         description = description.replace(/AMAZON_SEARCH:\s*.+?(\n|$)/i, '');
     }
-    document.getElementById('resultDescription').innerHTML = description.replace(/\n/g, '<br>') + amazonHtml;
+    // description is AI-generated from an untrusted user-uploaded image (possible prompt injection) — escape before innerHTML, then restore line breaks
+    document.getElementById('resultDescription').innerHTML = escapeHtml(description).replace(/\n/g, '<br>') + amazonHtml;
 }
 
 function resetToHome() {
