@@ -736,7 +736,7 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
     <div class="vcard">
         <h3 class="font-bold mb-3">Questions? Just Ask.</h3>
         <div class="flex flex-wrap gap-2">
-            <a href="https://wa.me/447976884254" class="btn btn-green flex-1">WhatsApp Chris</a>
+            <a href="https://signal.me/#p/+447976884254" class="btn btn-green flex-1">Signal Chris</a>
             <a href="mailto:chris@chrisptee.co.uk" class="btn btn-outline flex-1">Email</a>
         </div>
     </div>
@@ -1243,7 +1243,7 @@ async function signUpOrIn(emailId, passwordId, formId, successId) {
         }
         const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({ email, password });
         if (signUpError) {
-            if (signUpError.message.includes('already registered')) alert('Account exists but password is wrong. Try again or contact Chris on WhatsApp.');
+            if (signUpError.message.includes('already registered')) alert('Account exists but password is wrong. Try again or contact Chris on Signal.');
             else alert('Error: ' + signUpError.message);
             return;
         }
