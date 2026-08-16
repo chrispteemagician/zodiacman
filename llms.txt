@@ -1,0 +1,14 @@
+# Zodiac Man
+
+> Free AI mystical-object identifier and astrology village, built in memory of Brian Carter ("Zodiac Man"), a blind Lancashire astrologer who read the stars over CB radio.
+
+## Pages
+
+- [Home](https://zodiacman.netlify.app/): The Spooky Do Village — Brian's Mystical Identifier (photo → spiritual/astrology identification, free, no sign-in, unlimited), Spooky Roast (same upload flow, a warm roast instead), Ask Zodiac Man chat, Personal Reading (birthday → horoscope/numerology/moon context), Tarot draw / Crystal ball / Daily rune (free, client-side), a free Supabase account (kudos, activity feed, QR code, bio), and The Hamlet (a directory for astrology/tarot/crystal professionals).
+
+## About
+
+Part of the FeelFamous -Oid Ecosystem. Built by Chris P Taylor (Doc Strange).
+The core tool — identification, roast, chat, and personal reading — is free for everyone, no sign-in required, unlimited.
+Membership here is sold via Stripe, not Patreon (the one exception in the ecosystem): Founder Villager is £27/year or £4.95/month (Villager number, QR code, Kudos, founding badge — community/cosmetic, not a tool gate); Master (Hamlet) is £97/year early rate (hosted directory listing for astrology/tarot/crystal professionals, QR, Kudos-per-signup).
+Contact: chris@chrisptee.co.uk
