@@ -249,6 +249,43 @@ type script" needed to go. Ran `/wcag-remediate` (reference doctrine:
   assigned branch this session) — **not merged to `main`**, Chris hasn't
   reviewed yet.
 
+### 2026-09-03 — Claude (live hotfix, same day, after Chris merged the above)
+
+Chris merged the WCAG/pricing PR himself, then tested it live and hit a
+real bug: Brian's Mystical Identifier threw "Analysis failed." Root
+cause, confirmed via the Netlify API (not guessed): `analyze-image.js`
+and `chat-zodiacman.js` only checked `process.env.GOOGLE_API_KEY`, but
+this site's Netlify env only has `GEMINI_API_KEY` set — both the
+Identifier and Ask Zodiac Man chat have likely been broken in production
+for a while. Fixed both functions to check `GEMINI_API_KEY` first,
+falling back to `GOOGLE_API_KEY` — same pattern already used elsewhere
+in this ecosystem, and the exact fallback already applied when this
+app's functions were ported into `feelfamous/floors/zodiacman/` earlier
+the same session.
+
+Same conversation, three more fixes:
+- **The £14.95/mo Family/Small Business card now uses the real Founder
+  Stripe link** (`buy.stripe.com/bJe4gzbsLgUu3nHfCffrW08`) instead of
+  routing to Signal Chris — Chris confirmed this link already exists and
+  is live ("14.95 is founder already set up"). Same link already used on
+  feelfamous.co.uk and spicylister — this is the ecosystem-standard
+  Founder tier, not a bespoke new one. Relabelled the card "Founder" to
+  match.
+- **Dropped the two remaining "World domination through kindness" lines**
+  from the footer (Chris: "world domination needs removing") — replaced
+  with "Just trying to be useful," matching the ecosystem-wide tagline
+  swap the rest of the -oids got back on 2026-07-21. This repo had never
+  been swept.
+- Confirmed `feelfamous.co.uk/zodiac` (the `floors/zodiacman/` pilot from
+  earlier the same session) is genuinely live, and confirmed via the
+  Netlify API that `GEMINI_API_KEY` is set in `feelfamous`'s production
+  env too — the identify/chat functions there should work.
+
+Backed up first (`backup/pre-hotfix-20260903`), pushed straight to
+`main` since this was fixing something actively broken in production
+while Chris was testing live — same "back up, then go, don't stop and
+ask" pattern this ecosystem uses for live-site hotfixes.
+
 ## Deploy
 
 Push to `main` → Netlify auto-deploys. Never drag-to-Netlify. `git pull`
