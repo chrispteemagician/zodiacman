@@ -121,11 +121,29 @@ if you want to be a regular. Not a gate. Not gamified.
 
 | Tier | Price | What it is |
 |------|-------|------------|
-| Founder Villager | £27/yr or £4.95/mo | Villager number + QR, Kudos, founding badge — community/cosmetic, not a tool gate |
-| Master (Hamlet) | £97/yr (early rate) | Hosted directory listing for astrology/tarot/crystal professionals, QR, Kudos-per-signup |
+| Villager | 99p first month, then £4.95/mo | Villager number + QR, Kudos, founding badge — community/cosmetic, not a tool gate. **Changed 2026-09-03** (was flat £27/yr or £4.95/mo — the annual option is gone, replaced with this proof-of-human hook, same pattern as `feelfamous.co.uk/scan`) |
+| Family / Small Business | £14.95/mo | Same Villager benefits, shared across a household or team. **New tier, 2026-09-03** — no Stripe Payment Link exists yet, routes to Signal Chris until one is created |
+| Master (Hamlet) | £97/yr (early rate) | Hosted directory listing for astrology/tarot/crystal professionals, QR, Kudos-per-signup — untouched by this pass, different product (a professional listing, not a personal/family tier) |
 
-Pricing unchanged by this session except the false-scarcity/false-gate copy
-fixes noted above — don't touch the actual numbers without Chris's say-so.
+**2026-09-03 pricing restructure (Chris, phone):** Villager tier changed
+from flat £27/yr or £4.95/mo to a 99p-first-month hook then £4.95/mo,
+plus a new £14.95/mo Family/Small Business tier — verbatim: *"the 99
+pence for the first month, 4.95 after that, 14.95 if you're a small
+business or a family."* The 99p link reuses the existing £4.95/mo Stripe
+Payment Link (`aFabJ1fJ10Vw6zT89NfrW00`) with
+`?prefilled_promo_code=VILLAGER99` appended — same promo code already
+live on `feelfamous.co.uk/scan`. **Not confirmed working** — that promo
+code may be scoped to the specific Stripe Price it was created against
+(feelfamous's own £4.95/mo product, a different Price ID from this
+repo's), and I have no way to test a live Stripe checkout from this
+session. **Chris: please test this link once live and confirm the 99p
+discount actually applies at checkout — if it errors or doesn't apply,
+either a new promo code needs creating against this repo's own Price, or
+this becomes a genuinely new £0.99 one-time-then-£4.95 Stripe Payment
+Link instead of a promo code on the existing one.** The £14.95/mo tier
+has no real Stripe product behind it at all yet — same placeholder
+pattern already used for Master Hamlet's early state, routes to Signal
+until Chris creates the real Payment Link and sends it over.
 
 ---
 

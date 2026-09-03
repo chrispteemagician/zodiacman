@@ -30,7 +30,7 @@
   "description": "Free AI mystical-object identifier and astrology village, built in memory of Brian Carter (\"Zodiac Man\"), a blind Lancashire astrologer. Identify crystals, tarot cards, runes and spiritual objects; get a Personal Reading, Ask Zodiac Man chat, tarot draw and crystal ball, all free with no sign-in.",
   "applicationCategory": "LifestyleApplication",
   "operatingSystem": "Any",
-  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "GBP", "description": "Free to use, unlimited, no sign-in. Optional paid membership via Stripe: Founder Villager £27/year or £4.95/month; Master Hamlet listing £97/year early rate."},
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "GBP", "description": "Free to use, unlimited, no sign-in. Optional paid membership via Stripe: Villager 99p first month then £4.95/month, or £14.95/month for a family or small business; Master Hamlet listing £97/year early rate."},
   "creator": {"@type": "Person", "name": "Chris P Taylor", "alternateName": "Doc Strange", "url": "https://chrisptee.co.uk"},
   "sameAs": ["https://feelfamous.co.uk"]
 }
@@ -731,7 +731,7 @@ html.readable-mode [style*="opacity:.7"],html.readable-mode [style*="opacity: .7
         <p style="color:var(--text-muted);font-size:1rem;margin-bottom:16px">We follow your lead, not a plan. We watch how you use it, then build what you actually need.</p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="https://buy.stripe.com/6oUeVdaoH33EbUd3TxfrW03" class="btn btn-gold" style="font-size:1.1rem">Become a Founder Master &mdash; &pound;97/yr</a>
-            <a href="#sectionJoin" onclick="event.preventDefault();scrollToSection('#pageJoin')" class="btn btn-outline" style="font-size:1.1rem">Join as Villager &mdash; &pound;27/yr</a>
+            <a href="#sectionJoin" onclick="event.preventDefault();scrollToSection('#pageJoin')" class="btn btn-outline" style="font-size:1.1rem">Join as Villager &mdash; from 99p</a>
         </div>
     </div>
 </section>
@@ -743,32 +743,33 @@ html.readable-mode [style*="opacity:.7"],html.readable-mode [style*="opacity: .7
     <h2 id="h-pageJoin" class="font-hand text-3xl text-center mb-4" style="color:var(--gold)">Join the Village</h2>
 
     <div class="vcard">
-        <h3 class="text-xl font-bold mb-3">Why Become a Founder?</h3>
-        <p class="text-sm mb-3" style="color:var(--text-muted)">Founders see what this could be. You're not buying a membership &mdash; you're backing something real. A place where mystics find community, share what they know, and help each other.</p>
+        <h3 class="text-xl font-bold mb-3">Why Become a Villager?</h3>
+        <p class="text-sm mb-3" style="color:var(--text-muted)">Villagers see what this could be. You're not buying a membership &mdash; you're backing something real. A place where mystics find community, share what they know, and help each other.</p>
         <p class="text-sm" style="color:var(--text-muted)"><strong style="color:var(--text)">WE NEVER TAKE A CUT. EVER.</strong> You earn Kudos.</p>
     </div>
 
-    <!-- Founder Villager -->
+    <!-- 99p first month hook -->
     <div class="offer-card">
         <div class="relative z-10">
-            <span class="badge badge-founder mb-3">Founder Villager</span>
-            <h3 class="text-3xl font-extrabold mb-2">&pound;27<span class="text-lg font-normal opacity-80">/year</span></h3>
-            <p class="opacity-80 mb-4">Early-days pricing. Join now and keep this rate for as long as you're a member.</p>
+            <span class="badge badge-founder mb-3">Start Here</span>
+            <h3 class="text-3xl font-extrabold mb-2">99p<span class="text-lg font-normal opacity-80"> your first month</span></h3>
+            <p class="opacity-80 mb-4">Why 99p, not free: it's not about the money &mdash; it just proves you're a real person, not a bot. After that, &pound;4.95/month.</p>
             <ul class="space-y-2 mb-6 text-sm">
                 <li class="flex items-center gap-2"><span style="color:#22c55e">&#10003;</span> Your own Villager number + QR code</li>
                 <li class="flex items-center gap-2"><span style="color:#22c55e">&#10003;</span> Invite others, earn Kudos</li>
                 <li class="flex items-center gap-2"><span style="color:#22c55e">&#10003;</span> Founding Villager badge forever</li>
             </ul>
-            <a href="https://buy.stripe.com/8x29AT54ngUu7DX1LpfrW06" class="btn btn-gold w-full text-center">Claim Your Spot &mdash; &pound;27/year</a>
-            <p class="text-center opacity-60 text-xs mt-3">52p a week to back the community</p>
+            <a href="https://buy.stripe.com/aFabJ1fJ10Vw6zT89NfrW00?prefilled_promo_code=VILLAGER99" class="btn btn-gold w-full text-center">Join for 99p &mdash; Start Now</a>
+            <p class="text-center opacity-60 text-xs mt-3">Then &pound;4.95/month. Cancel anytime. No drama.</p>
         </div>
     </div>
 
-    <!-- Monthly -->
+    <!-- Family & Small Business -->
     <div class="vcard text-center" style="border-color:rgba(124,58,237,0.3)">
-        <p class="mb-2" style="color:var(--text-muted)">Prefer monthly?</p>
-        <a href="https://buy.stripe.com/aFabJ1fJ10Vw6zT89NfrW00" class="btn btn-primary w-full text-center text-lg">&pound;4.95/month</a>
-        <p class="text-xs mt-2" style="color:var(--text-muted)">Same benefits. Cancel anytime. No drama.</p>
+        <p class="font-bold mb-1" style="color:var(--gold)">Family or small business?</p>
+        <p class="mb-3 text-sm" style="color:var(--text-muted)">Same Villager benefits, shared across your household or team.</p>
+        <a href="https://signal.me/#p/+447976884254" class="btn btn-primary w-full text-center text-lg">&pound;14.95/month &mdash; Signal Chris to set up</a>
+        <p class="text-xs mt-2" style="color:var(--text-muted)">New tier, being set up &mdash; message Chris directly for now and he'll get you sorted.</p>
     </div>
 
     <!-- Free Sign In -->
