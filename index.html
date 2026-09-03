@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+    try {
+        if (localStorage.getItem('zm_readable_mode') === '1') {
+            document.documentElement.classList.add('readable-mode');
+        }
+    } catch (e) {}
+</script>
 <title>Zodiac Man | The Spooky Do Village</title>
 <meta name="description" content="The mystical community village. Horoscopes, tarot, runes, crystal ball readings and AI identification. In memory of Brian Carter, the blind astrologer. Part of FeelFamous.">
 <meta name="theme-color" content="#0f0a2e">
@@ -34,14 +41,14 @@
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine/astronomy.browser.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@400;600&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--midnight:#0f0a2e;--deep:#1a1a4e;--purple:#7c3aed;--purple-light:#a78bfa;--purple-glow:rgba(124,58,237,0.3);--gold:#d4a574;--gold-dark:#b8935a;--cream:#faf5e8;--text:#e8e8f0;--text-muted:#9184a8;--card-bg:rgba(26,26,78,0.6);--card-border:rgba(212,165,116,0.15)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;font-size:18px}
 body{font-family:'Cormorant Garamond',serif;margin:0;background:linear-gradient(180deg,var(--midnight) 0%,#1a0e2e 50%,var(--midnight) 100%);color:var(--text);min-height:100vh;font-size:18px;line-height:1.7}
 h1,h2,h3,h4,h5{font-family:'Cinzel',serif;font-weight:700;color:var(--gold)}
-.font-hand{font-family:'Caveat',cursive;font-weight:700}
+.font-hand{font-family:'Cormorant Garamond',serif;font-weight:700;font-style:italic}
 .text-xs{font-size:1rem!important;line-height:1.6!important}.text-sm{font-size:1rem!important;line-height:1.7!important}.text-base{font-size:1.125rem!important}.text-lg{font-size:1.3rem!important}.text-xl{font-size:1.5rem!important}.text-2xl{font-size:1.75rem!important}.text-3xl{font-size:2rem!important}.text-4xl{font-size:2.5rem!important}
 
 /* Header */
@@ -63,9 +70,9 @@ h1,h2,h3,h4,h5{font-family:'Cinzel',serif;font-weight:700;color:var(--gold)}
 /* Buttons */
 .btn{min-height:48px;font-weight:700;border-radius:12px;border:none;cursor:pointer;transition:all .15s;touch-action:manipulation;display:inline-flex;align-items:center;justify-content:center;padding:12px 24px;text-decoration:none;font-family:'Cinzel',serif}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:white}
+.btn-primary{background:linear-gradient(135deg,#5164bb,#764ba2);color:white}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--midnight);font-weight:700}
-.btn-green{background:#16a34a;color:white}
+.btn-green{background:#11823b;color:white}
 .btn-outline{background:transparent;border:2px solid var(--purple);color:var(--purple-light)}
 .btn-outline:hover{background:var(--purple-glow)}
 .btn-purple{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-weight:700;border:none;padding:12px 28px;border-radius:8px;cursor:pointer;font-size:16px;transition:transform .2s}
@@ -194,9 +201,28 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 
 @media(max-width:640px){.vcard{padding:20px}.offer-card{padding:24px}.dot-nav{right:8px;gap:8px}.dot-nav-dot{width:8px;height:8px}.snap-page{padding-top:60px}.tarot-card{width:100px;height:160px}.crystal-ball{width:150px;height:150px}body{font-size:16px}.nav-pill{font-size:12px;padding:10px 12px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Readable Mode — one switch, off by default, persisted via localStorage */
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--gold);color:var(--midnight);padding:12px 20px;border-radius:0 0 8px 0;font-weight:700;z-index:200;text-decoration:none}
+.skip-link:focus{left:0}
+.readable-toggle{display:block;margin:14px auto 0;font-size:.82rem;font-weight:800;padding:8px 16px;border-radius:20px;color:#fff;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);cursor:pointer;min-height:44px}
+.readable-toggle:hover{background:rgba(255,255,255,.12)}
+.readable-toggle[aria-pressed="true"]{background:var(--gold);color:var(--midnight);border-color:var(--gold)}
+html.readable-mode{font-size:24px;--text-muted:#ffffff}
+html.readable-mode,html.readable-mode *,html.readable-mode *::before,html.readable-mode *::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+html.readable-mode [style*="font-size:11px"],html.readable-mode [style*="font-size:12px"]{font-size:16px!important}
+html.readable-mode [style*="font-size:13px"],html.readable-mode [style*="font-size:14px"],html.readable-mode [style*="font-size:15px"]{font-size:19px!important}
+html.readable-mode [style*="font-size:16px"],html.readable-mode [style*="font-size:18px"]{font-size:22px!important}
+html.readable-mode [style*="font-size:20px"],html.readable-mode [style*="font-size:22px"]{font-size:26px!important}
+html.readable-mode .nav-pill{font-size:18px!important}
+html.readable-mode .tab-btn{font-size:20px!important}
+html.readable-mode .qa-q{font-size:19px!important}
+html.readable-mode [style*="opacity:.7"],html.readable-mode [style*="opacity: .7"]{opacity:1!important}
 </style>
 </head>
 <body>
+
+<a href="#content" class="skip-link">Skip to content</a>
 
 <!-- Header -->
 <header class="village-header" id="headerWrap">
@@ -205,6 +231,17 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
     <p style="font-size:clamp(16px,3vw,22px);color:var(--text);margin-bottom:8px;font-weight:600">The Spooky Do Village</p>
     <p class="font-hand" style="font-size:clamp(18px,3.5vw,28px);color:var(--gold);max-width:600px;margin:0 auto">"Everything works out in the end. You've just got to keep moving forward."</p>
     <p style="margin-top:12px;font-size:14px;opacity:.7">In loving memory of Brian Carter &bull; The blind astrologer who still read the stars</p>
+    <button type="button" id="readable-toggle" class="readable-toggle" aria-pressed="false" onclick="toggleReadableMode()">
+        <span aria-hidden="true">&#x1F506;</span> <span id="readable-toggle-label">Readable Mode: Off</span>
+    </button>
+    <script>
+        (function () {
+            var on = document.documentElement.classList.contains('readable-mode');
+            var btn = document.getElementById('readable-toggle');
+            btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+            document.getElementById('readable-toggle-label').textContent = on ? 'Readable Mode: On' : 'Readable Mode: Off';
+        })();
+    </script>
 </header>
 
 <!-- Sticky Nav -->
@@ -249,13 +286,13 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
     </div>
 </div>
 
-<main class="max-w-3xl mx-auto px-4">
+<main class="max-w-3xl mx-auto px-4" id="content">
 
 <!-- ==================== PAGE: HOME ==================== -->
-<div class="snap-page" id="pageHome">
+<div class="snap-page" id="pageHome" role="region" aria-labelledby="h-pageHome">
 
 <section id="sectionIdentifier" class="section-fade">
-    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Brian's Mystical Identifier</h2>
+    <h2 id="h-pageHome" class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Brian's Mystical Identifier</h2>
     <p class="text-center mb-4" style="color:var(--text-muted);font-size:1.1rem">Snap a photo of any mystical object. Brian identifies crystals, tarot cards, runes, spiritual items and more.</p>
     <div id="oracleUpload">
         <div class="vcard">
@@ -394,9 +431,9 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 </div><!-- /pageHome -->
 
 <!-- ==================== PAGE: READING ==================== -->
-<div class="snap-page" id="pageReading">
+<div class="snap-page" id="pageReading" role="region" aria-labelledby="h-pageReading">
 <section class="section-fade">
-    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Your Personal Reading</h2>
+    <h2 id="h-pageReading" class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Your Personal Reading</h2>
     <p class="font-hand text-center" style="color:var(--gold);font-size:20px;margin-bottom:20px">"Spooky Do! Let Brian read your stars, love"</p>
     <div class="vcard">
         <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:end">
@@ -418,9 +455,9 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 </div><!-- /pageReading -->
 
 <!-- ==================== PAGE: SPOOKY DO ==================== -->
-<div class="snap-page" id="pageSpooky">
+<div class="snap-page" id="pageSpooky" role="region" aria-labelledby="h-pageSpooky">
 <section class="section-fade">
-    <h2 class="font-hand text-3xl text-center mb-4" style="color:var(--gold)">The Spooky Do</h2>
+    <h2 id="h-pageSpooky" class="font-hand text-3xl text-center mb-4" style="color:var(--gold)">The Spooky Do</h2>
 
     <!-- Tarot -->
     <div class="vcard" style="margin-bottom:24px">
@@ -465,19 +502,19 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 </div><!-- /pageSpooky -->
 
 <!-- ==================== PAGE: STARS ==================== -->
-<div class="snap-page" id="pageStars">
+<div class="snap-page" id="pageStars" role="region" aria-labelledby="h-pageStars">
 <section class="section-fade">
-    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">The Zodiac</h2>
+    <h2 id="h-pageStars" class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">The Zodiac</h2>
     <p class="font-hand" style="text-align:center;color:var(--gold);font-size:20px;margin-bottom:24px">"Every sign has magic, love. Every single one."</p>
     <div id="zodiacGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-bottom:32px"></div>
 
     <div class="vcard" style="margin-bottom:24px">
         <h3 style="font-size:20px;margin-bottom:16px;text-align:center">The Elements</h3>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
-            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#e25822;margin-bottom:6px">&#x1F525; Fire</h4><p style="font-size:15px">Aries, Leo, Sagittarius<br>Passionate, dynamic, creative</p></div>
-            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#228B22;margin-bottom:6px">&#x1F30D; Earth</h4><p style="font-size:15px">Taurus, Virgo, Capricorn<br>Grounded, reliable, practical</p></div>
-            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#4169E1;margin-bottom:6px">&#x1F4A8; Air</h4><p style="font-size:15px">Gemini, Libra, Aquarius<br>Intellectual, social, visionary</p></div>
-            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#008B8B;margin-bottom:6px">&#x1F30A; Water</h4><p style="font-size:15px">Cancer, Scorpio, Pisces<br>Intuitive, emotional, deep</p></div>
+            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#e25822;margin-bottom:6px"><span aria-hidden="true">&#x1F525;</span> Fire</h4><p style="font-size:15px">Aries, Leo, Sagittarius<br>Passionate, dynamic, creative</p></div>
+            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#228B22;margin-bottom:6px"><span aria-hidden="true">&#x1F30D;</span> Earth</h4><p style="font-size:15px">Taurus, Virgo, Capricorn<br>Grounded, reliable, practical</p></div>
+            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#4169E1;margin-bottom:6px"><span aria-hidden="true">&#x1F4A8;</span> Air</h4><p style="font-size:15px">Gemini, Libra, Aquarius<br>Intellectual, social, visionary</p></div>
+            <div class="vcard" style="background:linear-gradient(135deg,var(--cream),#f0ead8);color:var(--midnight)"><h4 style="color:#008B8B;margin-bottom:6px"><span aria-hidden="true">&#x1F30A;</span> Water</h4><p style="font-size:15px">Cancer, Scorpio, Pisces<br>Intuitive, emotional, deep</p></div>
         </div>
     </div>
 
@@ -493,9 +530,9 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 </div><!-- /pageStars -->
 
 <!-- ==================== PAGE: Q&A ==================== -->
-<div class="snap-page" id="pageQA">
+<div class="snap-page" id="pageQA" role="region" aria-labelledby="h-pageQA">
 <section class="section-fade">
-    <h2 class="font-hand text-3xl text-center mb-4" style="color:var(--gold)">Brian Answers Your Questions</h2>
+    <h2 id="h-pageQA" class="font-hand text-3xl text-center mb-4" style="color:var(--gold)">Brian Answers Your Questions</h2>
     <div class="qa-item"><div class="qa-q" onclick="toggleQA(this)"><span>What is astrology?</span><span class="qa-arrow">&#9660;</span></div><div class="qa-a">Now that's a big question, love! Astrology is the study of how the movements of the planets and stars connect to life down here on Earth. It's been around for thousands of years. I've got my Ephemeris that tracks where every planet is, every single day. Think of it like a cosmic weather forecast. It doesn't tell you what WILL happen, but it shows you the energies that are flowing.</div></div>
     <div class="qa-item"><div class="qa-q" onclick="toggleQA(this)"><span>Can the stars predict my future?</span><span class="qa-arrow">&#9660;</span></div><div class="qa-a">I'll be honest with you, love -- the stars don't predict your future. They illuminate it. Think of your birth chart as a map of possibilities. It shows your strengths, your tendencies, the energies you were born with. But YOU choose what to do with them. I've read thousands of charts and I've never seen a bad one. Every chart has gifts, every sign has magic.</div></div>
     <div class="qa-item"><div class="qa-q" onclick="toggleQA(this)"><span>What's an Ephemeris?</span><span class="qa-arrow">&#9660;</span></div><div class="qa-a">An Ephemeris is THE book as far as I'm concerned -- it lists the exact position of every planet for every day of every year. I carried mine everywhere. Even after I lost my sight, I had most of it memorised. With an Ephemeris and a birth time, I can read anyone's stars. It's my bible, love.</div></div>
@@ -507,9 +544,9 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 </div><!-- /pageQA -->
 
 <!-- ==================== PAGE: BRIAN (Chat) ==================== -->
-<div class="snap-page" id="pageBrian">
+<div class="snap-page" id="pageBrian" role="region" aria-labelledby="h-pageBrian">
 <section class="section-fade">
-    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Ask Zodiac Man</h2>
+    <h2 id="h-pageBrian" class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Ask Zodiac Man</h2>
     <p class="text-center text-sm mb-4" style="color:var(--text-muted)">Brian's always got time for a rag chew. Ask him anything about the stars, tarot, runes, crystals, or life itself.</p>
     <div class="chat-container">
         <div class="p-3 text-center text-sm" style="background:rgba(26,26,78,0.8);color:var(--gold)">
@@ -537,9 +574,9 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 </div><!-- /pageBrian -->
 
 <!-- ==================== PAGE: GEAR ==================== -->
-<div class="snap-page" id="pageGear">
+<div class="snap-page" id="pageGear" role="region" aria-labelledby="h-pageGear">
 <section class="section-fade">
-    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Zodiac Man's Kit Bag</h2>
+    <h2 id="h-pageGear" class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">Zodiac Man's Kit Bag</h2>
     <p class="font-hand" style="text-align:center;color:var(--gold);font-size:20px;margin-bottom:24px">"Every good astrologer needs the right tools, love"</p>
     <div id="gearGrid"></div>
     <p class="text-xs text-center mt-4 mb-6" style="color:var(--text-muted)">Amazon links &mdash; buying through these helps the village, costs you nothing extra.</p>
@@ -556,45 +593,45 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 </div><!-- /pageGear -->
 
 <!-- ==================== PAGE: VILLAGE ==================== -->
-<div class="snap-page" id="pageVillage">
+<div class="snap-page" id="pageVillage" role="region" aria-labelledby="h-pageVillage">
 <section class="section-fade">
-    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">The Village</h2>
+    <h2 id="h-pageVillage" class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">The Village</h2>
     <p class="text-center text-sm mb-6" style="color:var(--text-muted)">The people who believed before it was built.</p>
 
     <div class="vcard" style="margin-top:20px">
         <h3 class="font-bold mb-4">The -Oid Villages</h3>
         <div class="grid grid-cols-3 gap-2 mb-4">
-            <a href="https://magic-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#127913;</span><span class="block text-sm font-semibold mt-1">Magic-Oid</span></a>
-            <div class="village-link text-center py-3" style="border-color:var(--gold)"><span class="text-2xl">&#128302;</span><span class="block text-sm font-bold mt-1" style="color:var(--gold)">You're Here!</span></div>
-            <a href="https://radi-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128251;</span><span class="block text-sm font-semibold mt-1">Radi-Oid</span></a>
-            <a href="https://sail-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#9973;</span><span class="block text-sm font-semibold mt-1">Sail-Oid</span></a>
-            <a href="https://guitar-oid.netlify.app" class="village-link text-center py-3"><span class="text-2xl">&#127928;</span><span class="block text-sm font-semibold mt-1">Guit-Oid</span></a>
-            <a href="https://cannabin-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#127807;</span><span class="block text-sm font-semibold mt-1">Cannabin-Oid</span></a>
-            <a href="https://vinyl-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128191;</span><span class="block text-sm font-semibold mt-1">Vinyl-Oid</span></a>
-            <a href="https://coin-oid.netlify.app" class="village-link text-center py-3"><span class="text-2xl">&#129689;</span><span class="block text-sm font-semibold mt-1">Coin-Oid</span></a>
-            <a href="https://fish-oid.netlify.app" class="village-link text-center py-3"><span class="text-2xl">&#128031;</span><span class="block text-sm font-semibold mt-1">Fish-Oid</span></a>
-            <a href="https://designer-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#128087;</span><span class="block text-sm font-semibold mt-1">Designer-Oid</span></a>
-            <a href="https://watch-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#8986;</span><span class="block text-sm font-semibold mt-1">Watch-Oid</span></a>
-            <a href="https://miniature-oid.netlify.app" class="village-link text-center py-3"><span class="text-2xl">&#128269;</span><span class="block text-sm font-semibold mt-1">Miniature-Oid</span></a>
+            <a href="https://magic-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#127913;</span><span class="block text-sm font-semibold mt-1">Magic-Oid</span></a>
+            <div class="village-link text-center py-3" style="border-color:var(--gold)"><span class="text-2xl" aria-hidden="true">&#128302;</span><span class="block text-sm font-bold mt-1" style="color:var(--gold)">You're Here!</span></div>
+            <a href="https://radi-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#128251;</span><span class="block text-sm font-semibold mt-1">Radi-Oid</span></a>
+            <a href="https://sail-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#9973;</span><span class="block text-sm font-semibold mt-1">Sail-Oid</span></a>
+            <a href="https://guitar-oid.netlify.app" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#127928;</span><span class="block text-sm font-semibold mt-1">Guit-Oid</span></a>
+            <a href="https://cannabin-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#127807;</span><span class="block text-sm font-semibold mt-1">Cannabin-Oid</span></a>
+            <a href="https://vinyl-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#128191;</span><span class="block text-sm font-semibold mt-1">Vinyl-Oid</span></a>
+            <a href="https://coin-oid.netlify.app" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#129689;</span><span class="block text-sm font-semibold mt-1">Coin-Oid</span></a>
+            <a href="https://fish-oid.netlify.app" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#128031;</span><span class="block text-sm font-semibold mt-1">Fish-Oid</span></a>
+            <a href="https://designer-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#128087;</span><span class="block text-sm font-semibold mt-1">Designer-Oid</span></a>
+            <a href="https://watch-oid.co.uk" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#8986;</span><span class="block text-sm font-semibold mt-1">Watch-Oid</span></a>
+            <a href="https://miniature-oid.netlify.app" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#128269;</span><span class="block text-sm font-semibold mt-1">Miniature-Oid</span></a>
         </div>
     </div>
 
     <div class="vcard">
         <h3 class="font-bold mb-4">The Family</h3>
         <div class="grid grid-cols-2 gap-2">
-            <a href="https://comedymagic.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#127917;</span><span class="block text-sm font-semibold mt-1">Comedy Magic</span></a>
-            <a href="https://docstrange.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#129504;</span><span class="block text-sm font-semibold mt-1">Doc Strange</span></a>
-            <a href="https://chrisptee.co.uk" class="village-link text-center py-3"><span class="text-2xl">&#127913;</span><span class="block text-sm font-semibold mt-1">Chris P Tee</span></a>
-            <a href="https://feelfamous.com" class="village-link text-center py-3"><span class="text-2xl">&#11088;</span><span class="block text-sm font-semibold mt-1">FeelFamous</span></a>
+            <a href="https://comedymagic.co.uk" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#127917;</span><span class="block text-sm font-semibold mt-1">Comedy Magic</span></a>
+            <a href="https://docstrange.co.uk" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#129504;</span><span class="block text-sm font-semibold mt-1">Doc Strange</span></a>
+            <a href="https://chrisptee.co.uk" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#127913;</span><span class="block text-sm font-semibold mt-1">Chris P Tee</span></a>
+            <a href="https://feelfamous.com" class="village-link text-center py-3"><span class="text-2xl" aria-hidden="true">&#11088;</span><span class="block text-sm font-semibold mt-1">FeelFamous</span></a>
         </div>
     </div>
 </section>
 </div><!-- /pageVillage -->
 
 <!-- ==================== PAGE: HAMLET ==================== -->
-<div class="snap-page" id="pageHamlet">
+<div class="snap-page" id="pageHamlet" role="region" aria-labelledby="h-pageHamlet">
 <section class="section-fade">
-    <h2 class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">The Hamlet</h2>
+    <h2 id="h-pageHamlet" class="font-hand text-3xl text-center mb-2" style="color:var(--gold)">The Hamlet</h2>
     <p class="text-center mb-6" style="color:var(--text-muted);font-size:1.1rem">The professional area. Where readers, healers, teachers, and crystal sellers find their place.</p>
 
     <div class="vcard" style="background:linear-gradient(135deg,rgba(26,26,78,0.8),rgba(15,10,46,0.9));border:2px solid rgba(212,165,116,0.2);margin-bottom:24px">
@@ -630,7 +667,7 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
     <div id="hamlet-masters" class="tab-panel" data-tab-group="hamlet">
         <div class="vcard" style="border-left:4px solid #c2410c">
             <div class="flex items-center gap-3 mb-3">
-                <span class="text-3xl">&#127978;</span>
+                <span class="text-3xl" aria-hidden="true">&#127978;</span>
                 <div><h3 class="font-bold text-lg">Masters Row</h3><span style="background:#c2410c;color:white;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:700">OPEN</span></div>
             </div>
             <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7;margin-bottom:12px">Shop owners, professional practitioners, lecturers. The trusted pros who keep the mystical community alive.</p>
@@ -649,7 +686,7 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
     <!-- Tab: Healers -->
     <div id="hamlet-healers" class="tab-panel" data-tab-group="hamlet">
         <div class="vcard" style="border-left:4px solid #ec4899;opacity:0.7">
-            <div class="flex items-center gap-3 mb-3"><span class="text-3xl">&#128156;</span><div><h3 class="font-bold text-lg">Healers Circle</h3><span style="background:rgba(236,72,153,0.2);color:#f472b6;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:600">COMING SOON</span></div></div>
+            <div class="flex items-center gap-3 mb-3"><span class="text-3xl" aria-hidden="true">&#128156;</span><div><h3 class="font-bold text-lg">Healers Circle</h3><span style="background:rgba(236,72,153,0.2);color:#f472b6;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:600">COMING SOON</span></div></div>
             <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7">Crystal healers, energy workers, reiki practitioners, sound healers. The ones who tend to the spirit as well as the stars.</p>
         </div>
     </div>
@@ -657,7 +694,7 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
     <!-- Tab: Teachers -->
     <div id="hamlet-teachers" class="tab-panel" data-tab-group="hamlet">
         <div class="vcard" style="border-left:4px solid #8b5cf6;opacity:0.7">
-            <div class="flex items-center gap-3 mb-3"><span class="text-3xl">&#127891;</span><div><h3 class="font-bold text-lg">Teachers Quarter</h3><span style="background:rgba(139,92,246,0.2);color:#a78bfa;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:600">COMING SOON</span></div></div>
+            <div class="flex items-center gap-3 mb-3"><span class="text-3xl" aria-hidden="true">&#127891;</span><div><h3 class="font-bold text-lg">Teachers Quarter</h3><span style="background:rgba(139,92,246,0.2);color:#a78bfa;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:600">COMING SOON</span></div></div>
             <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7">Astrology tutors, tarot course creators, palmistry teachers. The ones who pass the ancient knowledge forward.</p>
         </div>
     </div>
@@ -665,7 +702,7 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
     <!-- Tab: Crystals -->
     <div id="hamlet-crystals" class="tab-panel" data-tab-group="hamlet">
         <div class="vcard" style="border-left:4px solid #06b6d4;opacity:0.7">
-            <div class="flex items-center gap-3 mb-3"><span class="text-3xl">&#128142;</span><div><h3 class="font-bold text-lg">Crystal Market</h3><span style="background:rgba(6,182,212,0.2);color:#22d3ee;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:600">COMING SOON</span></div></div>
+            <div class="flex items-center gap-3 mb-3"><span class="text-3xl" aria-hidden="true">&#128142;</span><div><h3 class="font-bold text-lg">Crystal Market</h3><span style="background:rgba(6,182,212,0.2);color:#22d3ee;padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:600">COMING SOON</span></div></div>
             <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7">Crystal shops, stone sellers, suppliers. The people who bring the Earth's treasures to the surface.</p>
         </div>
     </div>
@@ -673,7 +710,7 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
     <!-- Tab: Sacred -->
     <div id="hamlet-sacred" class="tab-panel" data-tab-group="hamlet">
         <div class="vcard" style="background:linear-gradient(135deg,#0a0512,#150d24,#0a0512);border:2px solid rgba(212,165,116,0.3)">
-            <div class="flex items-center gap-3 mb-3"><span class="text-3xl">&#128367;&#65039;</span><div><h3 class="font-bold text-lg">The Ancient Circle</h3><span style="background:linear-gradient(135deg,#d4a574,#b8935a);color:var(--midnight);padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:700">SACRED</span></div></div>
+            <div class="flex items-center gap-3 mb-3"><span class="text-3xl" aria-hidden="true">&#128367;&#65039;</span><div><h3 class="font-bold text-lg">The Ancient Circle</h3><span style="background:linear-gradient(135deg,#d4a574,#b8935a);color:var(--midnight);padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:700">SACRED</span></div></div>
             <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7">A tribute to the teachers who came before. Nostradamus, Ptolemy, the ancient astrologers and mystics who lit the path we walk today. Not a shop. A shrine.</p>
         </div>
     </div>
@@ -681,7 +718,7 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
     <!-- Tab: Brian Memorial -->
     <div id="hamlet-memorial" class="tab-panel" data-tab-group="hamlet">
         <div class="vcard" style="background:linear-gradient(135deg,#0a0512,#150d24,#0a0512);border:2px solid rgba(212,165,116,0.2)">
-            <div class="flex items-center gap-3 mb-3"><span class="text-3xl">&#x1F56F;</span><div><h3 class="font-bold text-lg">Brian Carter Memorial</h3><span style="background:linear-gradient(135deg,#d4a574,#b8935a);color:var(--midnight);padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:700">MEMORIAL</span></div></div>
+            <div class="flex items-center gap-3 mb-3"><span class="text-3xl" aria-hidden="true">&#x1F56F;</span><div><h3 class="font-bold text-lg">Brian Carter Memorial</h3><span style="background:linear-gradient(135deg,#d4a574,#b8935a);color:var(--midnight);padding:2px 10px;border-radius:8px;font-size:0.8rem;font-weight:700">MEMORIAL</span></div></div>
             <p style="text-align:center;font-style:italic;color:var(--gold);font-size:1.1rem;line-height:1.8;margin-bottom:12px">"The stars don't care if you can see them. They shine for everyone."</p>
             <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.7">Brian Carter &mdash; Zodiac Man. Born a showman, lived a mystic, died a legend. He read the stars over CB radio to anyone who'd listen. He lost his sight but never lost his vision. This village is his legacy.</p>
         </div>
@@ -701,9 +738,9 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 </div><!-- /pageHamlet -->
 
 <!-- ==================== PAGE: JOIN ==================== -->
-<div class="snap-page" id="pageJoin">
+<div class="snap-page" id="pageJoin" role="region" aria-labelledby="h-pageJoin">
 <section id="sectionJoin" class="section-fade">
-    <h2 class="font-hand text-3xl text-center mb-4" style="color:var(--gold)">Join the Village</h2>
+    <h2 id="h-pageJoin" class="font-hand text-3xl text-center mb-4" style="color:var(--gold)">Join the Village</h2>
 
     <div class="vcard">
         <h3 class="text-xl font-bold mb-3">Why Become a Founder?</h3>
@@ -853,6 +890,16 @@ body > div[style*="2147483646"],body > div[style*="2147483647"]{display:none!imp
 <canvas id="resultCanvas" class="hidden"></canvas>
 
 <script>
+// ==================== READABLE MODE ====================
+function toggleReadableMode() {
+    const on = !document.documentElement.classList.contains('readable-mode');
+    document.documentElement.classList.toggle('readable-mode', on);
+    try { localStorage.setItem('zm_readable_mode', on ? '1' : '0'); } catch (e) {}
+    const btn = document.getElementById('readable-toggle');
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    document.getElementById('readable-toggle-label').textContent = on ? 'Readable Mode: On' : 'Readable Mode: Off';
+}
+
 // ==================== CONFIG ====================
 const CONFIG = {
     oidName: 'Zodiac Man',
@@ -1149,7 +1196,7 @@ window.onload = async function() {
 function showAuthSuccess() {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay'; modal.id = 'authSuccessModal';
-    modal.innerHTML = '<div class="modal-content text-center"><div class="text-6xl mb-4">&#128302;&#10024;</div><h2 class="text-2xl font-bold text-gray-800 mb-3">Welcome Home, Seeker</h2><p class="text-gray-600 mb-4">The stars were waiting for you. You\'re family now \u2014 the fire was already burning, we saved you a seat.</p><p class="text-purple-600 font-semibold mb-6">+10 Kudos for joining!</p><button onclick="document.getElementById(\'authSuccessModal\').remove()" class="btn btn-primary w-full">Let\'s Read the Stars!</button></div>';
+    modal.innerHTML = '<div class="modal-content text-center"><div class="text-6xl mb-4" aria-hidden="true">&#128302;&#10024;</div><h2 class="text-2xl font-bold text-gray-800 mb-3">Welcome Home, Seeker</h2><p class="text-gray-600 mb-4">The stars were waiting for you. You\'re family now \u2014 the fire was already burning, we saved you a seat.</p><p class="text-purple-600 font-semibold mb-6">+10 Kudos for joining!</p><button onclick="document.getElementById(\'authSuccessModal\').remove()" class="btn btn-primary w-full">Let\'s Read the Stars!</button></div>';
     document.body.appendChild(modal);
 }
 

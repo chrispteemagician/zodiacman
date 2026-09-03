@@ -164,6 +164,73 @@ fixes noted above — don't touch the actual numbers without Chris's say-so.
 
 ---
 
+## Session History
+
+### 2026-09-03 — Claude (WCAG remediation + font fix, on the feelfamous-consolidation branch)
+
+Chris, on the phone, called this repo "so behind" and flagged two things
+specifically: text needed to be more readable, and the "stupid Comic Sans
+type script" needed to go. Ran `/wcag-remediate` (reference doctrine:
+`feelfamous` root `index.html`). Backed up first:
+`backup/pre-wcag-remediation-20260903`.
+
+- **The "Comic Sans" complaint was real and had a name**: `.font-hand`
+  used Google's 'Caveat' cursive/handwritten font on ~20 section headings
+  and quote lines throughout the page. Same complaint, same fix Chris
+  already gave for motor-oid's Spanner Jack voice (2026-08-10, per that
+  repo's CLAUDE.md) — dropped Caveat entirely, repointed `.font-hand` to
+  the page's own existing 'Cormorant Garamond' body serif (italic, still
+  visually distinct from plain body text, genuinely readable). Removed
+  the Caveat family from the Google Fonts `<link>` too.
+- **Real, computed contrast failures found on the two most-used buttons on
+  the page** — not guessed: `.btn-primary` (Identify mode button, Share,
+  Sign In/Sign Up, the £4.95/mo membership link, Download QR) had white
+  text on its lighter gradient stop `#667eea` at 3.66:1 — fails AA.
+  `.btn-green` (Download, Signal Chris) had white text on `#16a34a` at
+  3.30:1 — fails AA. Same exact colour and same exact failure already
+  found and fixed in life-oid's WCAG pass, same fix applied: darkened the
+  failing stop only (`#667eea`→`#5164bb`, 5.40:1; `#16a34a`→`#11823b`,
+  4.91:1), text stays white, still reads as "the blue button"/"the green
+  button" to a sighted user.
+- Viewport `maximum-scale=1.0, user-scalable=no` removed (was blocking
+  pinch-zoom outright — same gotcha already found on travel-oid).
+- `<main id="content">` already existed; added a skip link pointed at it
+  (page had none). All 10 `snap-page` sections got a heading `id` +
+  `role="region" aria-labelledby` wired to their existing `<h2>` (headings
+  themselves were already real, unlike the feelfamous reference case).
+- 26 decorative emoji spans (`<span class="text-Nxl">`, the Hamlet card
+  icons, the Elements grid Fire/Earth/Air/Water glyphs, the welcome-modal
+  sparkle) wrapped `aria-hidden="true"` — a screen reader was announcing
+  "crescent moon", "graduation cap" etc. as content next to text already
+  saying the same thing.
+- Readable Mode toggle added (header, below the tagline) — one switch,
+  off by default, `localStorage` key `zm_readable_mode`, scales root
+  font-size 18px→24px, brightens `--text-muted` to solid white, freezes
+  animation/transition, and — new gotcha this page hit that the reference
+  build didn't — boosts the ~68 hardcoded `px` font-sizes scattered across
+  inline styles and CSS classes (this page's type scale is only partly
+  `rem`-based, so the root-font-size trick alone wouldn't have reached
+  most of the card/label text) via `[style*="font-size:Npx"]` attribute
+  overrides for the common small sizes plus explicit `.nav-pill`/
+  `.tab-btn`/`.qa-q` class overrides.
+- Verified with a real Playwright/Chromium pass: default state screenshot
+  shows the Cormorant Garamond italic quote (not cursive) and the
+  corrected button colours; toggling Readable Mode sets
+  `html.readable-mode`, bumps root font-size 18→24px, flips
+  `aria-pressed`/label correctly, and persists across a reload. Console
+  showed only sandbox-network errors (CDN scripts for Supabase/Tailwind/
+  QRCode can't reach the internet from this session — pre-existing,
+  unrelated to this change, would resolve on a real deploy).
+- **Not done, flagged rather than guessed at:** "bring completely up to
+  date with everything" was broader than this pass covers — this session
+  did the two concrete things Chris named (readability, button
+  visibility) plus the standard WCAG sweep. Didn't touch pricing, copy,
+  the Hamlet/Founder tier structure, or anything else "up to date" might
+  have meant — ask if more specific gaps exist.
+- Pushed to `claude/feelfamous-reliability-audit-rs8m9h` (this repo's
+  assigned branch this session) — **not merged to `main`**, Chris hasn't
+  reviewed yet.
+
 ## Deploy
 
 Push to `main` → Netlify auto-deploys. Never drag-to-Netlify. `git pull`
